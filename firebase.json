@@ -70,6 +70,10 @@
       {
         "source": "/checkUserType",
         "function": "checkUserType"
+      },
+      {
+        "source": "/registerAdminUser",
+        "function": "registerAdminUser"
       }
     ]
   }

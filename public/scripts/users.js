@@ -6,6 +6,14 @@ firebase.auth().onAuthStateChanged(user => {
   }
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+  var elems = document.querySelectorAll('.modal');
+  M.Modal.init(elems, {});
+
+  elems = document.querySelectorAll('select');
+  M.FormSelect.init(elems, {});
+});
+
 function renderUseresPage(user) {
   console.log(user.uid);
   fetch('/getUsers', {
@@ -23,6 +31,7 @@ function renderUseresPage(user) {
 
 function fillInTable(users) {
   let tableBodyEl = document.getElementById('tableBody');
+  tableBodyEl.innerHTML = '';
   for (const user of users) {
     let userType = 'regular';
     if (user.customClaims && user.customClaims.admin === true) {
@@ -36,6 +45,8 @@ function fillInTable(users) {
         <td>${userType}</td>
         <td>${user.metadata.lastSignInTime}</td>
         <td>${user.metadata.creationTime}</td>
+        <td><a href="#" class="waves-effect waves-green btn valign"><i class="material-icons">edit</i>Edit</a></td>
+        <td><a href="#" class="waves-effect waves-green btn valign"><i class="material-icons">delete</i>Remove</a></td>
       </tr>
     `;
   }
@@ -47,4 +58,26 @@ function addHoverEffect(e) {
 
 function removeHoverEffect(e) {
   e.classList.remove('is-selected');
+}
+
+function addUser(form) {
+  var formData = new FormData(form);
+  var data = Object.fromEntries(formData);
+  firebase
+    .auth()
+    .createUserWithEmailAndPassword(data.email, data.password)
+    .then(res => {
+      if (data.type === 'admin') {
+        fetch('/registerAdminUser', {
+          method: 'POST',
+          credentials: 'include',
+          body: JSON.stringify({ uid: res.user.uid })
+        }).catch(err => {
+          console.log('Got error: ', err);
+        });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+    });
 }

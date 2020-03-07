@@ -87,7 +87,7 @@ exports.events = functions.https.onRequest((req, res) => {});
 exports.registerAdminUser = functions.https.onRequest((req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 'private'); // required for cookie according to documentation
-  const uid = req.body.uid;
+  const uid = JSON.parse(req.body).uid;
   admin
     .auth()
     .setCustomUserClaims(uid, { admin: true })

@@ -6,8 +6,14 @@
     <script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-auth.js"></script>
     <link
+      type="text/css"
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"
+      href="/css/materialize/materialize.css"
+    />
+    <script src="/scripts/materialize/materialize.js"></script>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
     />
     <link rel="stylesheet" href="./css/users.css" />
     <script src="./scripts/main.js"></script>
@@ -17,58 +23,37 @@
     <title>Users</title>
   </head>
   <body>
-    <!-- Navbar start -->
-    <nav
-      class="navbar"
-      role="navigation"
-      aria-label="main navigation"
-      style="padding: 0 2%;"
-    >
-      <div id="navbar" class="navbar-menu">
-        <div class="navbar-brand">
-          <h1 class="title is-3">Analytics Application</h1>
-          <a
-            role="button"
-            class="navbar-burger burger"
-            aria-label="menu"
-            aria-expanded="false"
-            data-target="navbarBasicExample"
-          >
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            sc
-          </a>
-        </div>
-        <div class="navbar-end">
-          <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link">
-              Profile
-            </a>
-
-            <div class="navbar-dropdown">
-              <div id="profileOptions">
-                <a class="navbar-item" href="./setting.html">
-                  Settings
-                </a>
-              </div>
-              <hr class="navbar-divider" />
-              <a
-                class="navbar-item"
-                href="javascript:void(0)"
-                onclick="signOut()"
-              >
-                Sign out
-              </a>
-            </div>
-          </div>
-        </div>
+    <!-- Top Navigation Bar -->
+    <nav>
+      <div class="nav-wrapper blue darken-2">
+        <a
+          href="/"
+          class="brand-logo"
+          style="font-size: 1.6em; margin-left: 0.7em;"
+          >Analytics - Dashboard</a
+        >
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li></li>
+          <li>
+            <a
+              class="dropdown-trigger waves-effect waves-light"
+              data-target="dropdown-account"
+              ><i style="font-size: 3em" class="material-icons"
+                >account_circle</i
+              ></a
+            >
+          </li>
+        </ul>
+      </div>
+      <!-- Dropdown Structure -->
+      <div id="dropdown-account" class="dropdown-content">
+        <ul id="dropdown-list"></ul>
       </div>
     </nav>
-    <!-- Navbar End -->
+    <!-- End Nav -->
 
     <div class="container mainContent">
-      <table class="table">
+      <table class="highlight">
         <thead>
           <tr>
             <th>UID</th>
@@ -77,11 +62,65 @@
             <th>Type</th>
             <th>Last Sign In</th>
             <th>Creation Time</th>
+            <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody id="tableBody"></tbody>
       </table>
-      <button class="button is-primary is-outlined">Add</button>
+
+      <!-- Modal Trigger -->
+      <a
+        class="waves-effect waves-light btn modal-trigger mt-3 valign"
+        href="#addModal"
+        ><i class="material-icons">add</i>Add</a
+      >
+
+      <!-- Modal Structure -->
+      <div id="addModal" class="modal modal-fixed-footer">
+        <div class="modal-content">
+          <form
+            id="addUserForm"
+            onsubmit="javascript:addUser(this); return false;"
+          >
+            <div class="row">
+              <div class="input-field col s12">
+                <input id="email" type="email" name="email" class="validate" />
+                <label for="email">Email</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <input
+                  id="password"
+                  type="password"
+                  name="password"
+                  class="validate"
+                />
+                <label for="password">Password</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <select name="type">
+                  <option value="" disabled selected>Choose your option</option>
+                  <option value="regular">Regular</option>
+                  <option value="admin">Admin</option>
+                </select>
+                <label>Select Type</label>
+              </div>
+            </div>
+            <div class="row">
+              <button type="submit" class="btn">Create</button>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <a href="#!" class="modal-close waves-effect waves-green btn-flat"
+            >Cancel</a
+          >
+        </div>
+      </div>
     </div>
   </body>
 </html>
