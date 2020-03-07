@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="./styles/main.css" />
+    <link rel="stylesheet" href="./styles/form.css" />
+    <title>Forms</title>
+    <script defer src="./scripts//reporter.js"></script>
+  </head>
+  <body>
+    <!-- Nav Bar -->
+    <nav>
+      <div>
+        <div id="navLeft">
+          <span><a href="./index.html">Home</a></span>
+        </div>
+        <div id="navMiddle"></div>
+        <div id="navRight">
+          <span><a href="./images.html">Images</a></span>
+          <span><a href="./form.html">Forms</a></span>
+          <span><a href="./table_and_lists.html">Tables</a></span>
+          <span><a href="./externals.html">Externals</a></span>
+          <span><a href="./showdb.html">Show Database</a></span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Form -->
+    <form action="http://httpbin.org/post" method="POST">
+      <h1>Tell us about yourself below.</h1>
+      <progress value="0" max="100" id="progress"></progress>
+      <fieldset>
+        <legend>General Information</legend>
+        <div class="row">
+          <div class="input-container">
+            <label for="name" class="label" title="Please enter your name"
+              >Name</label
+            >
+            <input
+              type="text"
+              name="name"
+              id="name"
+              class="text-input"
+              required
+            />
+          </div>
+          <div class="input-container">
+            <label
+              for="password"
+              class="label"
+              title="Please enter your password"
+              >Password</label
+            >
+            <input
+              type="password"
+              name="password"
+              id="password"
+              class="text-input"
+              minlength="6"
+              maxlength="30"
+              required
+              placeholder="Enter a strong password"
+            />
+          </div>
+          <div class="input-container">
+            <label for="email" class="label" title="Please enter your email"
+              >Email</label
+            >
+            <input
+              type="email"
+              name="email"
+              id="email"
+              class="text-input"
+              required
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-container">
+            <label for="birthday" class="label">Birthday</label>
+            <input
+              type="date"
+              name="birthday"
+              id="birthday"
+              class="text-input"
+            />
+          </div>
+          <div class="input-container">
+            <label for="phone" class="label">Phone</label>
+            <input type="tel" name="phone" id="phone" class="text-input" />
+          </div>
+          <div class="input-container">
+            <label for="website" class="label">Website</label>
+            <input type="url" name="website" id="website" class="text-input" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="input-container">
+            <label for="hobbies" class="label">Hobies</label>
+            <textarea
+              name="hobbies"
+              id="hobbies"
+              class="text-input"
+              style="width: 1030px; height: 100px;"
+              placeholder="I love cats!"
+            ></textarea>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-container">
+            <label for="time" class="label">Current Time</label>
+            <input type="time" name="time" id="time" class="text-input" />
+          </div>
+          <div class="input-container">
+            <label for="image" class="label">Avatar</label>
+            <input type="file" name="image" id="image" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="input-container">
+            <label for="recieveEmails" class="label"
+              >Recieve Emails From Us?</label
+            >
+            <input type="radio" name="recieveEmails" id="recieveEmails" />
+          </div>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Other Info</legend>
+        <div class="row">
+          <div class="input-container">
+            <label for="composer" class="label">Select Favorite Composer</label>
+            <select name="composer" id="composer" class="text-input">
+              <optgroup label="Guitar">
+                <option value="sabicas">Sabicas</option>
+                <option value="pdl">Paco De Lucia</option>
+                <option value="albeniz">Issac Albeniz</option>
+                <option value="tarrega">Francisco Tarrega</option>
+              </optgroup>
+              <optgroup label="Piano">
+                <option value="chopin">Chopin</option>
+                <option value="liszt">Liszt</option>
+                <option value="mozzart">Mozzart</option>
+                <option value="schubert">Franz Schubert</option>
+              </optgroup>
+              <optgroup label="Violin">
+                <option value="vivaldi">Vivaldi</option>
+                <option value="paganini">Paganini</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="input-container">
+            <label for="college" class="label">Favorite College(s)</label>
+            <select name="college" id="college" class="text-input" multiple>
+              <option value="1">Muir</option>
+              <option value="2">Revelle</option>
+              <option value="3">ERC</option>
+              <option value="4">Marshal</option>
+              <option value="5">Warren</option>
+              <option value="6">Sixth</option>
+              <option value="7">Seventh</option>
+            </select>
+          </div>
+          <div class="input-container">
+            <label for="color" class="label">Favorite Color</label>
+            <input type="color" name="color" id="color" class="text-input" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="input-container">
+            <p>Which languages are you proficient in?</p>
+            <input type="checkbox" name="cpp" id="cpp" checked tabindex="1" />
+            <label for="cpp">C++</label>
+            <input type="checkbox" name="python" id="python" tabindex="2" />
+            <label for="python">Python</label>
+            <input type="checkbox" name="js" id="js" tabindex="3" />
+            <label for="js">JavaScript</label>
+            <input type="checkbox" name="other" id="other" tabindex="4" />
+            <label for="other">Other</label>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>For Later</legend>
+        <div class="row">
+          <div class="input-container">
+            <label for="code" class="label">This is your Code</label>
+            <input
+              type="text"
+              name="code"
+              id="code"
+              class="text-input"
+              readonly
+              value="ARG12MM23N"
+            />
+          </div>
+          <div class="input-container">
+            <label for="later" class="label">This will available later</label>
+            <input
+              type="text"
+              name="later"
+              id="later"
+              class="text-input"
+              disabled
+            />
+          </div>
+        </div>
+      </fieldset>
+      <div class="row" style="width: 1094px;">
+        <button class="btn" type="reset">Reset</button>
+        <input type="submit" class="btn" value="Submit" />
+      </div>
+    </form>
+    <script>
+      const inputs = document.getElementsByClassName('text-input');
+      for (i of inputs) {
+        i.addEventListener('change', () => {
+          document.getElementById('progress').value += 10;
+        });
+      }
+    </script>
+    <noscript>
+    <img src="/tracker?noscript=true&url=form.html" height=1 width=1 />
+    </noscript>
+  </body>
+</html>

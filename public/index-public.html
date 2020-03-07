@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="./styles/main.css" />
+    <title>Shaya's Page</title>
+    <script defer src="./scripts//reporter.js"></script>
+  </head>
+  <body>
+    <!-- Nav Bar -->
+    <nav>
+      <div>
+        <div id="navLeft">
+          <span><a href="./index.html">Home</a></span>
+        </div>
+        <div id="navMiddle"></div>
+        <div id="navRight">
+          <span><a href="./images.html">Images</a></span>
+          <span><a href="./form.html">Forms</a></span>
+          <span><a href="./table_and_lists.html">Tables</a></span>
+          <span><a href="./externals.html">Externals</a></span>
+          <span><a href="./showdb.html">Show Database</a></span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <header>
+      <small>CSE 135 HW 1</small>
+    </header>
+
+    <!-- Main Section -->
+    <main>
+      <article>
+        <h1>About me</h1>
+        <p>
+          Hi there! My name is Shaya Parsa and I'm a 4th year CS student at
+          UCSD! I love web development, music, snakes, movies.
+        </p>
+
+        <div class="container">
+          <section>
+            <h2>Web Development</h2>
+            <p>
+              I love web development. I work with many frontend and backend
+              frame works.<br /><br />
+              <em>Frontend:</em>
+            </p>
+            <ul class="content-list">
+              <li>Reactjs</li>
+              <li>HTML and CSS</li>
+              <li>Vue</li>
+            </ul>
+            <p><em>Backend:</em></p>
+
+            <ul class="content-list">
+              <li>Flask</li>
+              <li>Go</li>
+              <li>Nodejs</li>
+              <li>Django</li>
+            </ul>
+            <button id="btn1" class="btn" onclick="result.value='code();'">
+              Calm
+            </button>
+            <button id="btn2" class="btn" onclick="result.value='keepCalm();'">
+              Not calm
+            </button>
+            <pre>
+    <code>if (calm) {</code>
+      <code>code();</code>
+    <code>} else {</code>
+      <code>keepCalm();</code>
+    <code>}</code>
+            </pre>
+            <code><output id="result" for="btn1 btn2"></output></code>
+          </section>
+          <section>
+            <h2>Music</h2>
+            <p>
+              I love music more than anything. I has to be the thing I enjoy the
+              most.<br />
+              I love classical music the most. I play Piano and Gutiar.
+            </p>
+            <div class="img-row">
+              <div class="img-container">
+                <img class="img" src="./media/chopin.jpg" alt="Chopin" />
+              </div>
+              <div class="img-container">
+                <img class="img" src="./media/pianomeme.jpg" alt="Meme" />
+              </div>
+              <div class="img-container">
+                <img class="img" src="./media/sabicas.jpg" alt="Sabicas" />
+              </div>
+            </div>
+          </section>
+          <section>
+            <h2>Snakes</h2>
+            <p>
+              I don't actually own any pets but I swear if I had the licence,
+              time, and the money I would buy some venomous snakes (aka
+              hots).<br />
+              Just look at how cute these little danger noodles are!<br /><br />
+              These are called African Bush Vipers (<i>Atheris Squamigera</i>).
+              They are known for their amazing colors and they look like mini
+              dragons. They are extremely venomous and dangerous. Yikes!
+            </p>
+            <div class="img-row">
+              <div class="img-container">
+                <img class="img" src="./media/atheris1.jpg" alt="Atheris 1" />
+              </div>
+              <div class="img-container">
+                <img class="img" src="./media/atheris2.jpg" alt="Atheris 2" />
+              </div>
+            </div>
+          </section>
+          <section>
+            <h2>Movies</h2>
+            <p>
+              Like most other people I also love watching movies and shows. I
+              love many different genres but my favorites are fantasy, action,
+              and comedy<br />
+              I love the Witcher series and Pirates of the Carribean.
+            </p>
+            <div class="img-row">
+              <div class="img-container">
+                <img class="img" src="./media/davy.jpg" alt="Pirates" />
+              </div>
+              <div class="img-container">
+                <img class="img" src="./media/witcher.jpg" alt="Witcher" />
+              </div>
+            </div>
+          </section>
+        </div>
+      </article>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <details>
+        <summary><small>Want to hire me?</small></summary>
+        <address>9500 Gilman Dr, La Jolla, CA 92093</address>
+        <small>Phone: (858) 534-2230</small>
+      </details>
+    </footer>
+    <script src="./scripts/main.js"></script>
+    <noscript>
+    <img src="/tracker?noscript=true&url=index.html" height=1 width=1 />
+    </noscript>
+  </body>
+</html>

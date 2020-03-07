@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="./styles/main.css" />
+    <link rel="stylesheet" href="./styles/images.css" />
+    <title>Images</title>
+    <script defer src="./scripts//reporter.js"></script>
+  </head>
+  <body>
+    <!-- Nav Bar -->
+    <nav>
+      <div>
+        <div id="navLeft">
+          <span><a href="./index.html">Home</a></span>
+        </div>
+        <div id="navMiddle"></div>
+        <div id="navRight">
+          <span><a href="./images.html">Images</a></span>
+          <span><a href="./form.html">Forms</a></span>
+          <span><a href="./table_and_lists.html">Tables</a></span>
+          <span><a href="./externals.html">Externals</a></span>
+          <span><a href="./showdb.html">Show Database</a></span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Images -->
+    <h1 style="text-align: center; margin-top: 3%;">
+      These are some picture tags, change the window size to see the the images
+      change!
+    </h1>
+    <div class="pic-container">
+      <picture>
+        <source
+          srcset="./media/davy-694-804.webp"
+          media="(min-width: 1000px)"
+        />
+        <source srcset="./media/davy-220-370.JPG" media="(min-width: 600px)" />
+        <source srcset="./media/davy.jpg" media="(min-width: 220px)" />
+        <img src="davy-694-804.webp" alt="Davy Jones" />
+      </picture>
+      <picture>
+        <source srcset="./media/jpapng.png" media="(min-width: 1000px)" />
+        <source srcset="./media/jpgif.gif" media="(min-width: 600px)" />
+        <source srcset="./media/jpsvg.svg" media="(min-width: 220px)" />
+        <img src="./media/jpapng.png" alt="Jack Sparrow" />
+      </picture>
+    </div>
+    <h1 style="text-align: center; margin-top: 3%;">
+      Some more images with different formats
+    </h1>
+    <div class="pic-container">
+      <img class="img" src="./media/will.png" alt="Will Turner" />
+      <img class="img" src="./media/will+elizabeth.png" alt="Will + Liz" />
+      <img class="img" src="./media/barbosa.png" alt="Barbosa" />
+    </div>
+    <div class="pic-container" style="margin-top: 20px;">
+      <img class="img" src="./media/dutchman.gif" alt="Flying Dutchman" />
+      <img class="img" src="./media/deadman.gif" alt="Dead man's chest" />
+    </div>
+    <noscript>
+    <img src="/tracker?noscript=true&url=images.html" height=1 width=1 />
+    </noscript>
+  </body>
+</html>
