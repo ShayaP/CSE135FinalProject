@@ -1,5 +1,1 @@
-firebase.initializeApp({
-  apiKey: 'AIzaSyClOiJERHHSH8yQYrOM8r8CUkvSWgImNuA',
-  authDomain: 'cse135finalproject.firebaseapp.com',
-  projectId: 'cse135finalproject'
-});
+document.writeln(`Page generated on ${new Date()}`);
