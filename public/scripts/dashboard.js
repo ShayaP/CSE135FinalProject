@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 document.addEventListener("DOMContentLoaded", refreshData);
 
-var dbObject = {};
+var dbObject;
 
 function refreshData() {
   fetch('/query')
@@ -19,16 +19,36 @@ function refreshData() {
 
 function render(json) {
   dbObject = json;
-  let userList = document.getElementById('user-list');
-  userList.innerHTML = '';
-  for (const user in dbObject) {
-    userList.innerHTML += `
-        <li>
-          <a href="#" class="" onclick="renderUser('${user}')">
-            ${user}
-          </a>
-        </li>`;
-  }
-  renderUser(null);
+  getBrowserData(dbObject);
 }
 
+function getUserListData(db) {
+  let list = [];
+  Object.keys(db).forEach((element) => {
+    list.push(db[element]);
+  });
+  return list;
+}
+
+function getSitesArray(db) {
+  let users = getUserListData(db);
+  let list = [];
+  users.forEach((user) => {
+    Object.keys(user).forEach((element) => {
+      list.push(user[element]);
+    })
+  })
+  return list;
+}
+
+function getBrowserData(dbObject) {
+  let pages = getSitesArray(dbObject);
+  
+  let agents = [];
+
+  pages.forEach((page) => {
+    agents.push(page.userAgent);
+  });
+
+  
+}
