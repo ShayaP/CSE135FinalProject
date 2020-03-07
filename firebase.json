@@ -1,0 +1,68 @@
+{
+  "emulators": {
+    "functions": {
+      "port": "5003"
+    },
+    "hosting": {
+      "public": "public"
+    }
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "hosting": {
+    "public": "public",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "/tracker",
+        "function": "tracker"
+      },
+      {
+        "source": "/query",
+        "function": "query"
+      },
+      {
+        "source": "/collect",
+        "function": "collect"
+      },
+      {
+        "source": "/purgeAll",
+        "function": "purgeAll"
+      },
+      {
+        "source": "/purge",
+        "function": "purge"
+      },
+      {
+        "source": "/login",
+        "function": "login"
+      },
+      {
+        "source": "/logout",
+        "function": "logout"
+      },
+      {
+        "source": "/dashboard",
+        "function": "dashboard"
+      },
+      {
+        "source": "/reports/speed",
+        "function": "speed"
+      },
+      {
+        "source": "/reports/browsers",
+        "function": "browsers"
+      },
+      {
+        "source": "/reports/events",
+        "function": "events"
+      },
+      {
+        "source": "/register",
+        "function": "register"
+      }
+    ]
+  }
+}
