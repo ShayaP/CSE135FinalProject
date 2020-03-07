@@ -15,11 +15,23 @@ function login(form) {
     });
 }
 
+function signOut() {
+  firebase
+    .auth()
+    .signOut()
+    .then(() => {
+      window.location.href = '/login.html';
+    });
+}
+
 firebase.auth().onAuthStateChanged(user => {
-  if (user) {
-    console.log('singin success.', user);
-    window.location.href = '/dashboard.html';
+  if (!user) {
+    if (window.location.pathname !== '/login.html') {
+      window.location.href = '/login.html';
+    }
   } else {
-    console.log('signin failed');
+    if (window.location.pathname === '/login.html') {
+      window.location.href = '/dashboard.html';
+    }
   }
 });
