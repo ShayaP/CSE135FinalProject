@@ -62,6 +62,14 @@
       {
         "source": "/register",
         "function": "register"
+      },
+      {
+        "source": "/getUsers",
+        "function": "getUsers"
+      },
+      {
+        "source": "/checkUserType",
+        "function": "checkUserType"
       }
     ]
   }

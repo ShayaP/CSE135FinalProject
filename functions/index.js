@@ -76,39 +76,6 @@ const collectSchema = joi.object({
     .required()
 });
 
-exports.logout = functions.https.onRequest((req, res) => {
-  res.set('Access-Control-Allow-Origin', '*');
-  res.setHeader('Cache-Control', 'private'); // required for cookie according to documentation
-  firebase
-    .auth()
-    .signOut()
-    .then(() => {
-      res.json({ msg: 'logged Out' });
-    })
-    .catch(error => {
-      console.log(error);
-      res.end();
-    });
-});
-
-exports.login = functions.https.onRequest((req, res) => {
-  res.set('Access-Control-Allow-Origin', '*');
-  res.setHeader('Cache-Control', 'private'); // required for cookie according to documentation
-  const body = JSON.parse(req.body);
-  const email = body.email;
-  const password = body.password;
-  firebase
-    .auth()
-    .signInWithEmailAndPassword(email, password)
-    .then(function(result) {
-      res.json({ msg: 'logged in' });
-    })
-    .catch(function(error) {
-      console.log(error);
-      res.status(500).json(error);
-    });
-});
-
 exports.dashboard = functions.https.onRequest((req, res) => {});
 
 exports.speed = functions.https.onRequest((req, res) => {});
@@ -117,7 +84,66 @@ exports.browsers = functions.https.onRequest((req, res) => {});
 
 exports.events = functions.https.onRequest((req, res) => {});
 
-exports.register = functions.https.onRequest((req, res) => {});
+exports.registerAdminUser = functions.https.onRequest((req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  res.setHeader('Cache-Control', 'private'); // required for cookie according to documentation
+  const uid = req.body.uid;
+  admin
+    .auth()
+    .setCustomUserClaims(uid, { admin: true })
+    .then(() => {
+      res.end();
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(500).json(error);
+    });
+});
+
+exports.checkUserType = functions.https.onRequest((req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  res.setHeader('Cache-Control', 'private'); // required for cookie according to documentation
+  const uid = JSON.parse(req.body).uid;
+
+  // Verify the ID token first.
+  admin
+    .auth()
+    .getUser(uid)
+    .then(user => {
+      if (user.customClaims && user.customClaims.admin === true) {
+        res.json({ type: 'admin' });
+      } else {
+        res.json({ type: 'regular' });
+      }
+    });
+});
+
+exports.getUsers = functions.https.onRequest((req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  res.setHeader('Cache-Control', 'private'); // required for cookie according to documentation
+  const uid = JSON.parse(req.body).uid;
+
+  // Verify the ID token first.
+  admin
+    .auth()
+    .getUser(uid)
+    .then(user => {
+      if (user.customClaims && user.customClaims.admin === true) {
+        admin
+          .auth()
+          .listUsers(1000)
+          .then(users => {
+            res.json(users);
+          })
+          .catch(error => {
+            console.log(error);
+            res.status(500).json(error);
+          });
+      } else {
+        res.status(401).end();
+      }
+    });
+});
 
 exports.tracker = functions.https.onRequest((req, res) => {
   // Set headers for response
