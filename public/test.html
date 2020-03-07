@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+  <title>Your First ZingChart</title>
+</head>
+<body>
+  <!-- Chart Placement [2] -->
+  <div id="chartDiv"></div>
+
+  <!-- Script Reference [1] -->
+  <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+
+  <script>
+    var chartData = {
+      // Specify your chart type
+      "type": "bar",
+      // Add your series data
+      "series": [
+        { "values": [35, 42, 67, 89] },
+        { "values": [28, 40, 39, 36] }
+      ]
+    };
+    // Render your chart [3]
+    zingchart.render({
+      id:'chartDiv',
+      data:chartData,
+      height:400,
+      width:600
+    });
+  </script>
+</body>
+</html>

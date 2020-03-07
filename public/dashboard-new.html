@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
+    <!-- Top Navigation Bar -->
     <nav>
         <div class="nav-wrapper blue darken-2">
           <a href="/" class="brand-logo" style="font-size: 1.6em; margin-left: 0.7em;">Analytics - Dashboard</a>
@@ -30,6 +31,7 @@
         </div>
     </nav>
 
+    <!-- Main Content -->
     <main>
     <div class="container">
         <!-- Card -->
@@ -37,8 +39,13 @@
             <div class="col s12">
                 <div class="z-depth-2 card grey lighten-4">
                 <div class="card-content">
-                    <!-- card -->
-                    <a href="/reports/speed.html">Speed</a>
+                    <!-- Card Content -->
+                    <div class="valign-wrapper row">
+                        <div class="col s2">
+                            <a href="/reports/speed.html">Speed</a>
+                        </div>
+                        <div class="col s10" id="firstchart"></div>
+                    </div>
                 </div>
                 </div>
             </div>
@@ -70,6 +77,7 @@
     </div>
     </main>
 
+    <!-- Footer -->
     <footer style="background-color: white;" class="page-footer">
         <div class="blue darken-2 valign-wrapper" style="height: 50px;">
           <div class="container">
@@ -77,5 +85,26 @@
           </div>
         </div>
     </footer>
+
+    <!-- Chart Scripts -->
+    <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+    <script>
+        var chartData = {
+  // Specify your chart type
+  "type": "bar",
+  // Add your series data
+  "series": [
+    { "values": [35, 42, 67, 89] },
+    { "values": [28, 40, 39, 36] }
+  ]
+};
+// Render your chart [3]
+zingchart.render({
+  id:'firstchart',
+  data:chartData,
+  height:400,
+  width:600
+});
+</script>
 </body>
 </html>
