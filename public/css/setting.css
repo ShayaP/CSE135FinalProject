@@ -1,0 +1,8 @@
+.mainContent {
+  width: 50%;
+  margin: 5% auto;
+  text-align: center;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  padding: 5% 0;
+}

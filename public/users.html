@@ -9,11 +9,12 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"
     />
-
+    <link rel="stylesheet" href="./css/users.css" />
     <script src="./scripts/main.js"></script>
     <script src="./scripts/auth.js"></script>
     <script src="./scripts/nav.js"></script>
-    <title>Dashboard</title>
+    <script src="./scripts/users.js"></script>
+    <title>Users</title>
   </head>
   <body>
     <!-- Navbar start -->
@@ -36,6 +37,7 @@
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
+            sc
           </a>
         </div>
         <div class="navbar-end">
@@ -64,5 +66,22 @@
       </div>
     </nav>
     <!-- Navbar End -->
+
+    <div class="container mainContent">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>UID</th>
+            <th>Email</th>
+            <th>Email Verified</th>
+            <th>Type</th>
+            <th>Last Sign In</th>
+            <th>Creation Time</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+      <button class="button is-primary is-outlined">Add</button>
+    </div>
   </body>
 </html>

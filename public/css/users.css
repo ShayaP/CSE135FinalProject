@@ -1,0 +1,12 @@
+.mainContent {
+  width: 90%;
+  margin: 5% auto;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  padding: 5% 0;
+}
