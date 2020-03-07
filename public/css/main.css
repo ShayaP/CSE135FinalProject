@@ -1,0 +1,168 @@
+:root {
+  --main-black-color: #373737;
+  --main-blue-color: #73b8eb;
+  --main-white-color: white;
+}
+
+/* Nav CSS */
+
+nav > div {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav div {
+  margin: 0 5px;
+}
+
+div a {
+  text-decoration: none;
+  color: var(--main-black-color);
+  padding: 15px;
+  transition: 0.1s linear;
+  font-size: 1.5em;
+}
+
+div a:hover {
+  background-color: var(--main-blue-color);
+  color: var(--main-white-color);
+  border-radius: 10px;
+}
+
+#navRight {
+  display: flex;
+  justify-content: end;
+}
+
+#navMiddle {
+  background-image: url(../media/ucsd.jpg);
+  width: 200px;
+  height: 60px;
+  background-size: contain;
+}
+
+/* Main content css */
+
+h1,
+h2,
+p,
+.content-list > li,
+small {
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+    'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color: var(--main-black-color);
+}
+
+h1 {
+  font-size: x-large;
+  text-transform: uppercase;
+}
+
+h2 {
+  font-size: large;
+  background-color: var(--main-blue-color);
+  color: var(--main-white-color);
+  font-style: italic;
+}
+
+p {
+  font-size: medium;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  margin: 30px 0;
+}
+
+section {
+  width: 45%;
+  margin: 0 2.5%;
+}
+
+section > h2 {
+  text-align: center;
+}
+
+section > p {
+  text-align: justify;
+}
+
+main {
+  margin: 20px 0;
+}
+
+article {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.content-list {
+  list-style: none;
+}
+
+.content-list > li {
+  margin: 5px 0;
+}
+
+pre {
+  background-color: rgb(243, 234, 224);
+  color: red;
+  width: 30%;
+}
+
+.img-row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.img-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--main-black-color);
+  margin: 10px;
+  padding: 5px;
+}
+
+.img {
+  max-width: 400px;
+  max-height: 400px;
+}
+
+/* Header */
+
+header {
+  text-align: center;
+}
+
+/* Footer */
+
+footer {
+  display: flex;
+  justify-content: center;
+}
+
+.btn {
+  padding: 15px;
+  color: var(--main-white-color);
+  background-color: var(--main-blue-color);
+  border-radius: 10px;
+  border: none;
+  font-size: medium;
+  transition: 0.2s linear;
+  margin: 0 10px;
+}
+
+.btn:hover {
+  color: var(--main-black-color);
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+}

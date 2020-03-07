@@ -1,0 +1,94 @@
+table {
+  display: block;
+  max-height: 600px;
+  overflow-y: scroll;
+  overflow-x: auto;
+}
+
+#eventInfo,
+#eventLog ul {
+  list-style: none;
+}
+
+#eventLog {
+  max-height: 600px;
+  overflow-y: scroll;
+  width: 100%;
+}
+
+#eventLog li {
+  padding: 10px;
+  font-size: medium;
+  font-weight: 400;
+}
+
+#eventInfo span {
+  padding: 10px;
+  font-size: larger;
+  font-weight: 600;
+  width: 50%;
+}
+
+#resourceInfo span {
+  padding: 10px;
+  font-size: larger;
+  font-weight: 600;
+  width: 90%;
+}
+
+#eventLog li:hover {
+  background-color: #eee;
+  cursor: pointer;
+}
+
+#eventInfo span:hover,
+#resourceInfo span:hover {
+  cursor: pointer;
+}
+
+.click-event li,
+.move-event li,
+.keystroke-event li,
+.scroll-event li,
+.beforeunload-event li,
+.idle-time li {
+  width: 70%;
+  margin: 0 auto;
+}
+
+.click-event li {
+  background-color: lightgoldenrodyellow;
+}
+
+.move-event li {
+  background-color: rgb(255, 219, 224);
+}
+
+.keystroke-event li {
+  background-color: rgb(198, 207, 219);
+}
+
+.scroll-event li {
+  background-color: rgb(251, 210, 255);
+}
+
+.beforeunload-event li {
+  background-color: rgb(219, 248, 219);
+}
+
+.idle-time li {
+  background-color: rgb(216, 232, 236);
+}
+
+.modal-content {
+  height: 70%;
+  width: 80%;
+  overflow-y: scroll;
+  background-color: #eee;
+}
+
+.modal-data-list {
+  padding: 20px;
+  height: 100%;
+  width: 100%;
+}
