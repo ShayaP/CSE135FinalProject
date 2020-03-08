@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", refreshData);
 
 var dbObject;
 
+let chartFontColor = "#8e99a9";
+
 function refreshData() {
   fetch('/query')
     .then(response => {
@@ -123,7 +125,7 @@ function renderPieChart(data, chartName, title) {
       }
     },
     title: {
-      fontColor: "#8e99a9",
+      fontColor: chartFontColor,
       text: title,
       align: "left",
       offsetX: 10,
@@ -208,7 +210,7 @@ function renderBarChart(data, chartName, title) {
               "background-color": "transparent",
               "title": {
                   "text": title,
-                  "font-color": "#7E7E7E",
+                  "font-color": chartFontColor,
                   "backgroundColor": "none",
                   "font-size": "22px",
                   "alpha": 1,
@@ -233,12 +235,12 @@ function renderBarChart(data, chartName, title) {
                   "maxItems": 3,
                   "toggle-action": "hide",
                   "pageOn": {
-                      "backgroundColor": "#000",
+                      "backgroundColor": chartFontColor,
                       "size": "10px",
                       "alpha": 0.65
                   },
                   "pageOff": {
-                      "backgroundColor": "#7E7E7E",
+                      "backgroundColor": chartFontColor,
                       "size": "10px",
                       "alpha": 0.65
                   },
@@ -257,9 +259,9 @@ function renderBarChart(data, chartName, title) {
                   }
               },
               "scale-y": {
-                  "line-color": "#7E7E7E",
+                  "line-color": chartFontColor,
                   "item": {
-                      "font-color": "#7e7e7e"
+                      "font-color": chartFontColor
                   },
                   "values": "0:60:10",
                   "guide": {
@@ -270,7 +272,7 @@ function renderBarChart(data, chartName, title) {
                     "font-family": "arial",
                     "bold": true,
                     "font-size": "14px",
-                    "font-color": "#7E7E7E",
+                    "font-color": chartFontColor,
                   },
               },
               "scaleX":{
