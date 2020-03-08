@@ -21,7 +21,7 @@ Brief overview of your authentication code and how you implemented it (including
     make authentications inside login page:
 
 ![auth_snippet_code](/public/media/auth_snippet_code.png)
-  
+
 Diagram that shows how your PoC examples work together including their routes
 
     For our routing diagram since we used traditional html formating not SPA we showed
@@ -29,11 +29,11 @@ Diagram that shows how your PoC examples work together including their routes
     in last part.
 
 Discussion of the grid library you used
-  
- For our grids, we will use Zinga Grid. Zing Grid plain JavaScript
+
+For our grids, we will use Zinga Grid. Zing Grid plain JavaScript
 web component that natively works with all frameworks, styles easily
 and has many built-in grid features
-  
+
 Discussion of the chart library you used
 
     For our chars, we will use Zing Chart. Zing Chart create animated &
@@ -41,11 +41,11 @@ Discussion of the chart library you used
     the ZingChart JavaScript charting library
 
 Code of the PoC will be per area
-  
- /public/scripts/auth.js: in this file we are implementing authentications
-  
- /public/scripts/dashboard.js: in this file we are implementing data extraction
-from our database and prepare our data for chart and grid functions
+
+    /public/scripts/auth.js: in this file we are implementing authentications
+
+    /public/scripts/dashboard.js: in this file we are implementing data extraction
+    from our database and prepare our data for chart and grid functions
 
     /public/nav.js: this script is responsible for determining if the user is admin or not.
 
@@ -53,15 +53,14 @@ from our database and prepare our data for chart and grid functions
 
     /public/users.js: this script handles CRUD operations on users. Only for admin users.
 
-
 App diagram and wireframes to implement for final project
 
     Here is PDF format for app-diagram:
 
 [app-dragram](/public/media/app-diagram.pdf)
-  
- Here is PDF format for wireframe:
-  
+
+Here is PDF format for wireframe:
+
 [Wireframe](/public/media/wireframe.pdf)
 
     Here is a link to better quality:
