@@ -40,12 +40,23 @@ Discussion of the chart library you used
     the ZingChart JavaScript charting library
     
 Code of the PoC will be per area 
-
-
-Diagram and wireframes to implement for final project 
     
-    Here is PDF format:
-![wireframe](/public/media/wireframe.pdf)
+    /public/scripts/auth.js: in this file we are implementing authentications
+    
+    /public/scripts/dashboard.js: in this file we are implementing data extraction
+    from our database and prepare our data for chart and grid functions
+        
+
+App diagram and wireframes to implement for final project 
+   
+   
+    Here is PDF format for app-diagram:
+    
+[app-dragram](/public/media/app-diagram.pdf)
+    
+    Here is PDF format for wireframe:
+    
+[Wireframe](/public/media/wireframe.pdf)
 
     Here is a link to better quality:
     
