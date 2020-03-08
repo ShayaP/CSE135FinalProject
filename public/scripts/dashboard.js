@@ -15,29 +15,13 @@ function refreshData() {
     .then(json => {
       render(json);
     });
-
-
-var chartData = {
-  // Specify your chart type
-  "type": "bar",
-  // Add your series data
-  "series": [
-    { "values": [35, 42, 67, 89] },
-    { "values": [28, 40, 39, 36] }
-  ]
-};
-// Render your chart [3]
-zingchart.render({
-  id:'firstchart',
-  data:chartData,
-  height:400,
-  width:600
-});
 }
 
 function render(json) {
   dbObject = json;
-  getBrowserData(dbObject);
+  renderBrowserChart(dbObject);
+  renderLanguageChart(dbObject);
+  renderFeatureChart(dbObject);
 }
 
 function getUserListData(db) {
@@ -89,8 +73,6 @@ function getBrowser(userAgent) {
 
 function getBrowserData(dbObject) {
   let pages = getSitesArray(dbObject);
-  
-  let agents = [];
 
   let browsers = pages.map(element => element.userAgent)
                       .map(getBrowser);
@@ -104,29 +86,29 @@ function getBrowserData(dbObject) {
       browserCount[browser] += 1;
     }
   });
-
-  renderBrowserChart(browserCount);
+  return browserCount;
 }
 
-function renderBrowserChart(browserCount) {
+function renderPieChart(data, chartName, title) {
   let colors = ['#50ADF5','#FF7965','#FFCB45','#6877e5','#6FB07F'];
   let colorIndex = 0;
 
   let series = [];
 
-  Object.keys(browserCount).forEach((key) => {
+  Object.keys(data).forEach((key) => {
     series.push({
-      values : [browserCount[key]],
+      values : [data[key]],
       text: key,
       backgroundColor: colors[(colorIndex++)%colors.length]
     });
   })
 
   let browserChartConfig = {
-    type: "pie", 
+    type: "pie",
+    backgroundColor: "transparent",
     plot: {
       borderColor: "#2B313B",
-      borderWidth: 5,
+      borderWidth: 2,
       // slice: 90,
       valueBox: {
         placement: 'out',
@@ -142,7 +124,7 @@ function renderBrowserChart(browserCount) {
     },
     title: {
       fontColor: "#8e99a9",
-      text: 'Page Loads by Browser',
+      text: title,
       align: "left",
       offsetX: 10,
       //fontFamily: "Sans",
@@ -155,9 +137,261 @@ function renderBrowserChart(browserCount) {
  };
   
  zingchart.render({ 
-   id : 'browser-chart', 
+   id : chartName, 
    data : browserChartConfig, 
    height: 400, 
    width: 600 
  });
+}
+
+function renderBrowserChart(dbObject) {
+  console.log(dbObject);
+  let browserCount = getBrowserData(dbObject);
+  renderPieChart(browserCount, 'browser-chart', 'Page Loads by Browser');
+}
+
+function getLanguageData(db) {
+  let pages = getSitesArray(dbObject);
+
+  let languages = pages.map(element => element.language);
+
+  let languageCount = {};
+
+  languages.forEach((language) => {
+    if (!languageCount.hasOwnProperty(language)) {
+      languageCount[language] = 1;
+    } else {
+      languageCount[language] += 1;
+    }
+  });
+  return languageCount;
+}
+
+function renderLanguageChart(dbObject) {
+  let languageCount = getLanguageData(dbObject);
+
+  renderPieChart(languageCount, 'language-chart', 'Page Loads by Language');
+}
+
+function getFeaturesData(dbObject) {
+  let pages = getSitesArray(dbObject);
+
+  let totalClicks = pages.length;
+
+
+
+  let languages = pages.map(element => element.language);
+
+  let languageCount = {};
+
+  languages.forEach((language) => {
+    if (!languageCount.hasOwnProperty(language)) {
+      languageCount[language] = 1;
+    } else {
+      languageCount[language] += 1;
+    }
+  });
+  return languageCount;
+}
+
+function renderFeatureChart(dbObject) {
+  let features = getFeaturesData(dbObject);
+
+  renderBarChart(null, 'feature-chart', 'Enabled Features');
+}
+
+function renderBarChart(data, chartName, title) {
+  let myConfig = {
+    "graphset": [
+          {
+              "type": "bar",
+              "background-color": "transparent",
+              "title": {
+                  "text": title,
+                  "font-color": "#7E7E7E",
+                  "backgroundColor": "none",
+                  "font-size": "22px",
+                  "alpha": 1,
+                  "adjust-layout":true,
+              },
+              "plotarea": {
+                  "margin": "dynamic"
+              },
+              "legend": {
+                  "layout": "x3",
+                  "overflow": "page",
+                  "alpha": 0.05,
+                  "shadow": false,
+                  "align":"center",
+                  "adjust-layout":true,
+                  "marker": {
+                      "type": "circle",
+                      "border-color": "none",
+                      "size": "10px"
+                  },
+                  "border-width": 0,
+                  "maxItems": 3,
+                  "toggle-action": "hide",
+                  "pageOn": {
+                      "backgroundColor": "#000",
+                      "size": "10px",
+                      "alpha": 0.65
+                  },
+                  "pageOff": {
+                      "backgroundColor": "#7E7E7E",
+                      "size": "10px",
+                      "alpha": 0.65
+                  },
+                  "pageStatus": {
+                      "color": "black"
+                  }
+              },
+              "plot": {   
+                  "bars-space-left":0.15,
+                  "bars-space-right":0.15,
+                  "animation": {
+                      "effect": "ANIMATION_SLIDE_BOTTOM",
+                      "sequence": 0, 
+                      "speed": 800,
+                      "delay": 800
+                  }
+              },
+              "scale-y": {
+                  "line-color": "#7E7E7E",
+                  "item": {
+                      "font-color": "#7e7e7e"
+                  },
+                  "values": "0:60:10",
+                  "guide": {
+                      "visible": true
+                  },
+                  "label": {
+                    "text": "$ Billions",
+                    "font-family": "arial",
+                    "bold": true,
+                    "font-size": "14px",
+                    "font-color": "#7E7E7E",
+                  },
+              },
+              "scaleX":{
+                  "values": [
+                      "Q3",
+                      "Q4",
+                      "Q1",
+                      "Q2"
+                  ],
+                  "placement":"default",
+                  "tick":{
+                      "size":58,
+                      "placement":"cross"
+                  },
+                  "itemsOverlap":true,
+                  "item":{
+                      "offsetY":-55
+                  }
+              },
+              "scaleX2":{
+                  "values":["2013","2014"],
+                  "placement":"default",
+                  "tick":{
+                      "size":20,
+                  },
+                  "item":{
+                      "offsetY":-15
+                  }
+              },
+              "tooltip": {
+                "visible": false
+              },
+              "crosshair-x":{
+                  "line-width":"100%",
+                  "alpha":0.18,
+                  "plot-label":{
+                    "header-text":"%kv Sales"
+                  }
+              },
+              "series": [
+                  {
+                      "values": [
+                          37.47,
+                          57.59,
+                          45.65,
+                          37.43
+                      ],
+                      "alpha": 0.95,
+                      "borderRadiusTopLeft": 7,
+                      "background-color": "#8993c7",
+                      "text": "Apple",
+                  },
+                  {
+                      "values": [
+                          2.02,
+                          2.59,
+                          2.5,
+                          2.91
+                      ],
+                      "borderRadiusTopLeft": 7,
+                      "alpha": 0.95,
+                      "background-color": "#fdb462",
+                      "text": "Facebook"
+                  },
+                  {
+                      "values": [
+                          13.4,
+                          14.11,
+                          14.89,
+                          16.86
+                      ],
+                      "alpha": 0.95,
+                      "borderRadiusTopLeft": 7,
+                      "background-color": "#8dd3c7",
+                      "text": "Google"
+                  },
+                  {
+                      "values": [
+                          18.53,
+                          24.52,
+                          20.4,
+                          23.38
+                      ],
+                      "borderRadiusTopLeft": 7,
+                      "alpha": 0.95,
+                      "background-color": "#fb8072",
+                      "text": "Microsoft"
+                  },
+                  {
+                      "values": [
+                          17.09,
+                          25.59,
+                          19.74,
+                          19.34
+                      ],
+                      "borderRadiusTopLeft": 7,
+                      "alpha": 0.95,
+                      "background-color": "#80b1d3",
+                      "text": "Amazon"
+                  },
+                  {
+                      "values": [
+                          2.31,
+                          2.36,
+                          2.42,
+                          2.52
+                      ],
+                      "borderRadiusTopLeft": 7,
+                      "alpha": 0.95,
+                      "background-color": "#b3de69",
+                      "text": "Cognizant"
+                  }
+              ]
+          }
+      ]
+  };
+
+  zingchart.render({ 
+    id : chartName, 
+    data : myConfig, 
+    height: 600, 
+    width: 400 
+  });
 }
