@@ -180,215 +180,101 @@ function getFeaturesData(dbObject) {
 
   let totalClicks = pages.length;
 
+  // Get true false value for enabled
+  let css = pages.map((element) => element.cssEnabled);
+  let images = pages.map((element) => element.imagesEnabled);
+  let javascript = pages.map((element) => element.JSEnabled);
+  let cookies = pages.map((element) => element.cookieEnabled);
 
+  // Convert true to 1 and false to 0
+  css = css.map((val) => val ? 1 : 0);
+  images = images.map((val) => val ? 1 : 0);
+  javascript = javascript.map((val) => val ? 1 : 0);
+  cookies = cookies.map((val) => val ? 1 : 0);
 
-  let languages = pages.map(element => element.language);
+  // Sum up the 1s
+  css = css.reduce((x,y) => x + y);
+  images = images.reduce((x,y) => x + y);
+  javascript = javascript.reduce((x,y) => x + y);
+  cookies = cookies.reduce((x,y) => x + y);
 
-  let languageCount = {};
+  css = css / totalClicks * 100;
+  images = images / totalClicks * 100;
+  javascript = javascript / totalClicks * 100;
+  cookies = cookies / totalClicks * 100;
 
-  languages.forEach((language) => {
-    if (!languageCount.hasOwnProperty(language)) {
-      languageCount[language] = 1;
-    } else {
-      languageCount[language] += 1;
-    }
-  });
-  return languageCount;
+  console.log(css);
+  console.log(totalClicks);
+
+  let data = [css, images, cookies, javascript];
+  let labels = ["CSS", "Images", "Cookies", "JS"];
+  return [data, labels];
 }
 
 function renderFeatureChart(dbObject) {
-  let features = getFeaturesData(dbObject);
-
-  renderBarChart(null, 'feature-chart', 'Enabled Features');
+  let [data, labels] = getFeaturesData(dbObject);
+  renderBarChart(data, 'feature-chart', labels, 'Enabled Features');
 }
 
-function renderBarChart(data, chartName, title) {
+function renderBarChart(data, chartName, labels, title) {
+  fullBar = [];
+  for (i = 0; i < data.length; i++) {
+    fullBar.push(100);
+  }
   let myConfig = {
-    "graphset": [
-          {
-              "type": "bar",
-              "background-color": "transparent",
-              "title": {
-                  "text": title,
-                  "font-color": chartFontColor,
-                  "backgroundColor": "none",
-                  "font-size": "22px",
-                  "alpha": 1,
-                  "adjust-layout":true,
-              },
-              "plotarea": {
-                  "margin": "dynamic"
-              },
-              "legend": {
-                  "layout": "x3",
-                  "overflow": "page",
-                  "alpha": 0.05,
-                  "shadow": false,
-                  "align":"center",
-                  "adjust-layout":true,
-                  "marker": {
-                      "type": "circle",
-                      "border-color": "none",
-                      "size": "10px"
-                  },
-                  "border-width": 0,
-                  "maxItems": 3,
-                  "toggle-action": "hide",
-                  "pageOn": {
-                      "backgroundColor": chartFontColor,
-                      "size": "10px",
-                      "alpha": 0.65
-                  },
-                  "pageOff": {
-                      "backgroundColor": chartFontColor,
-                      "size": "10px",
-                      "alpha": 0.65
-                  },
-                  "pageStatus": {
-                      "color": "black"
-                  }
-              },
-              "plot": {   
-                  "bars-space-left":0.15,
-                  "bars-space-right":0.15,
-                  "animation": {
-                      "effect": "ANIMATION_SLIDE_BOTTOM",
-                      "sequence": 0, 
-                      "speed": 800,
-                      "delay": 800
-                  }
-              },
-              "scale-y": {
-                  "line-color": chartFontColor,
-                  "item": {
-                      "font-color": chartFontColor
-                  },
-                  "values": "0:60:10",
-                  "guide": {
-                      "visible": true
-                  },
-                  "label": {
-                    "text": "$ Billions",
-                    "font-family": "arial",
-                    "bold": true,
-                    "font-size": "14px",
-                    "font-color": chartFontColor,
-                  },
-              },
-              "scaleX":{
-                  "values": [
-                      "Q3",
-                      "Q4",
-                      "Q1",
-                      "Q2"
-                  ],
-                  "placement":"default",
-                  "tick":{
-                      "size":58,
-                      "placement":"cross"
-                  },
-                  "itemsOverlap":true,
-                  "item":{
-                      "offsetY":-55
-                  }
-              },
-              "scaleX2":{
-                  "values":["2013","2014"],
-                  "placement":"default",
-                  "tick":{
-                      "size":20,
-                  },
-                  "item":{
-                      "offsetY":-15
-                  }
-              },
-              "tooltip": {
+    "graphset":[
+        {
+            "title": {
+              "fontColor": chartFontColor,
+              "text": title,
+              "align": "left",
+              "offsetX": 10,
+              "fontSize": 20
+            },
+            "offsetX": 40,
+            "background-color": "transparent",
+            "type":"hbar",
+            "plot":{
+                "stacked":true
+                },
+            "scaleX":{
+                "labels": labels,
+                },
+            "scaleY":{
+                "minValue":0,
+                "maxValue":100,
+                "decimals":1,
                 "visible": false
-              },
-              "crosshair-x":{
-                  "line-width":"100%",
-                  "alpha":0.18,
-                  "plot-label":{
-                    "header-text":"%kv Sales"
-                  }
-              },
-              "series": [
-                  {
-                      "values": [
-                          37.47,
-                          57.59,
-                          45.65,
-                          37.43
-                      ],
-                      "alpha": 0.95,
-                      "borderRadiusTopLeft": 7,
-                      "background-color": "#8993c7",
-                      "text": "Apple",
-                  },
-                  {
-                      "values": [
-                          2.02,
-                          2.59,
-                          2.5,
-                          2.91
-                      ],
-                      "borderRadiusTopLeft": 7,
-                      "alpha": 0.95,
-                      "background-color": "#fdb462",
-                      "text": "Facebook"
-                  },
-                  {
-                      "values": [
-                          13.4,
-                          14.11,
-                          14.89,
-                          16.86
-                      ],
-                      "alpha": 0.95,
-                      "borderRadiusTopLeft": 7,
-                      "background-color": "#8dd3c7",
-                      "text": "Google"
-                  },
-                  {
-                      "values": [
-                          18.53,
-                          24.52,
-                          20.4,
-                          23.38
-                      ],
-                      "borderRadiusTopLeft": 7,
-                      "alpha": 0.95,
-                      "background-color": "#fb8072",
-                      "text": "Microsoft"
-                  },
-                  {
-                      "values": [
-                          17.09,
-                          25.59,
-                          19.74,
-                          19.34
-                      ],
-                      "borderRadiusTopLeft": 7,
-                      "alpha": 0.95,
-                      "background-color": "#80b1d3",
-                      "text": "Amazon"
-                  },
-                  {
-                      "values": [
-                          2.31,
-                          2.36,
-                          2.42,
-                          2.52
-                      ],
-                      "borderRadiusTopLeft": 7,
-                      "alpha": 0.95,
-                      "background-color": "#b3de69",
-                      "text": "Cognizant"
-                  }
-              ]
-          }
-      ]
-  };
+                },
+            "series":[
+                {
+                    "values":data,
+                    "backgroundColor":'#50ADF5',
+                    "legend-text": "Enabled",
+                    "tooltip":{
+                      "text":"%v\%",
+                      "textAlign":"left",
+                      "decimals": 1
+                    },
+                    "valueBox":{
+                        "placement":"middle",
+                        "color": "#ffffff",
+                        "text": "%v\%",
+                        "decimals": 1
+                    }
+                },
+                {
+                    "values":fullBar,
+                    "legend-text": "Disabled",
+                    "backgroundColor":'#999999',
+                    "tooltip":{
+                      "text":""
+                    }
+                }
+            ]
+            }
+    ]
+    }
 
   zingchart.render({ 
     id : chartName, 
