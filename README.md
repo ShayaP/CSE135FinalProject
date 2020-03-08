@@ -38,10 +38,11 @@ Diagram that shows how your PoC examples work together including their **routes*
     for reporting and analytics work equally well and without the complexity overhead of
     a framework like React.
 
-    The main pages of the dashboard are in /public/dashboard-new.html,
-                                           /public/reports/browsers.html,
-                                           /public/reports/events.html,
-                                           /public/reports/speed.html.
+    Routing to the following pags through static files:
+    /public/dashboard-new.html,
+    /public/reports/browsers.html,
+    /public/reports/events.html,
+    /public/reports/speed.html.
 
 Discussion of the **grid library** you used 
     
@@ -68,8 +69,32 @@ Discussion of the **chart library** you used
          /public/dashboard-new.html
          /public/reports/browsers.html
 
-Code of the PoC will be per area
+**Code of the PoC will be per area**
 
+**Authentication**
+
+    Relevant files: /public/scripts/auth.js: in this file we are implementing authentications
+                    /public/scripts/dashboard.js: in this file we are implementing data extraction
+    from our database and prepare our data for chart and grid functions
+                    /public/nav.js: this script is responsible for determining if the user is admin or not.
+                    /public/setting.js: this script handles some logic for the settings page.
+                    /public/users.js: this script handles CRUD operations on users. Only for admin users.
+
+**Routing**
+    Routing to the following pags through static files:
+    /public/dashboard-new.html,
+    /public/reports/browsers.html,
+    /public/reports/events.html,
+    /public/reports/speed.html.
+
+**Grid**
+
+**Charts**
+
+    Relevant Files:
+         /public/scripts/dashboard.js
+         /public/dashboard-new.html
+         /public/reports/browsers.html
 
 
 App diagram and wireframes to implement for final project
