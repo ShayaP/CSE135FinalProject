@@ -50,6 +50,12 @@ Discussion of the **grid library** you used
     web component that natively works with all frameworks, styles easily
     and has many built-in grid features
     
+![Example grids for Browser Usage](public/media/showDB_table.png)
+    
+    Relevant Files:
+    /public/scripts/dashboard.js
+    /public/dashboard-new.html
+
 Discussion of the **chart library** you used 
 
     For our chars, we will use Zing Chart. Zing Chart create animated &
@@ -81,13 +87,18 @@ Discussion of the **chart library** you used
                     /public/users.js: this script handles CRUD operations on users. Only for admin users.
 
 **Routing**
+    
     Routing to the following pags through static files:
-    /public/dashboard-new.html,
-    /public/reports/browsers.html,
-    /public/reports/events.html,
-    /public/reports/speed.html.
+        /public/dashboard-new.html,
+        /public/reports/browsers.html,
+        /public/reports/events.html,
+        /public/reports/speed.html.
 
 **Grid**
+
+    Relevant Files:
+        /public/scripts/dashboard.js
+        /public/dashboard-new.html
 
 **Charts**
 
@@ -99,7 +110,7 @@ Discussion of the **chart library** you used
 
 App diagram and wireframes to implement for final project
 
-    Here is PDF format for app-diagram:
+Here is PDF format for app-diagram:
 
 [app-dragram](/public/media/app-diagram.pdf)
 
@@ -107,6 +118,6 @@ Here is PDF format for wireframe:
 
 [Wireframe](/public/media/wireframe.pdf)
 
-    Here is a link to better quality:
+Here is a link to better quality:
 
 [Wireframe link](https://miro.com/welcomeonboard/r5cdFwjFBnVmmrWhmBXtH4ugCyHbD6nFNAlS5mwm1SmmzldW02ljha5rdDPDaFu0)
