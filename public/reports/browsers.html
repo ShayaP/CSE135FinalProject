@@ -6,6 +6,7 @@
     <title>Analytics - Browsers</title>
     <link type="text/css" rel="stylesheet" href="/css/materialize/materialize.css"/>
     <link type="text/css" rel="stylesheet" href="/css/dashboard.css"/>
+    <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
     <script src="/scripts/materialize/materialize.js"></script>
     <script src="/scripts/dashboard.js"></script>
     <!-- for icons: -->
@@ -14,7 +15,7 @@
 <body>
     <nav>
         <div class="nav-wrapper blue darken-2">
-          <a href="/" class="brand-logo" style="font-size: 1.6em; margin-left: 0.7em;">Analytics - Dashboard</a>
+          <a href="/" class="brand-logo" style="font-size: 1.6em; margin-left: 0.7em;">Analytics - Browsers</a>
           <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li></li>
             <li><a class="dropdown-trigger waves-effect waves-light" data-target="dropdown-account"><i style="font-size: 3em" class="material-icons">account_circle</i></a></li>
@@ -33,41 +34,50 @@
 
     <main>
     <div class="container">
-        <!-- Card -->
-        <div class="row">
-            <div class="col s12">
-                <div class="z-depth-2 card grey lighten-4">
-                <div class="card-content">
-                    <!-- card -->
-                    Speed
-                </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Card -->
-        <div class="row">
-            <div class="col s12">
-                <div class="z-depth-2 card grey lighten-4">
-                <div class="card-content">
-                    <!-- card -->
-                    Browser
-                </div>
+    <div class="row center">
+        <!-- Class -->
+        <div class="col s2"></div>
+        <div class="col s8">
+            <div class="z-depth-2 card grey lighten-4">
+            <div class="card-content">
+                <!-- Card Content -->
+                <div class="valign-wrapper row">
+                    <div class="col s12" id="browser-chart"></div>
                 </div>
             </div>
+            </div>
         </div>
+    </div>
+    <div class="row">
+        <!-- Card -->
+        <div class="col s2"></div>
+        <div class="col s8">
+            <div class="z-depth-2 card grey lighten-4">
+            <div class="card-content">
+                <!-- Card Content -->
+                <div class="valign-wrapper row">
+                    <div class="col s12" id="language-chart"></div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <!-- Card -->
+        <div class="col s2"></div>
+        <div class="col s8">
+            <div class="z-depth-2 card grey lighten-4">
+            <div class="card-content">
+                <!-- card -->
+                <div class="valign-wrapper row">
+                    <div class="col s12" id="feature-chart"></div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
 
-        <!-- Card -->
-        <div class="row">
-            <div class="col s12">
-                <div class="z-depth-2 card grey lighten-4">
-                <div class="card-content">
-                    <!-- card -->
-                    Events
-                </div>
-                </div>
-            </div>
-        </div>
     </div>
     </main>
 
