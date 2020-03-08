@@ -22,8 +22,12 @@ Simon Kaufmann A16140686 <br/>
 
 ![auth_snippet_code](/public/media/auth_snippet_code.png)
 
-    Relevant files: /public/scripts/auth.js
-                    /public/login.html
+    Relevant files: /public/scripts/auth.js: in this file we are implementing authentications
+                    /public/scripts/dashboard.js: in this file we are implementing data extraction
+    from our database and prepare our data for chart and grid functions
+                    /public/nav.js: this script is responsible for determining if the user is admin or not.
+                    /public/setting.js: this script handles some logic for the settings page.
+                    /public/users.js: this script handles CRUD operations on users. Only for admin users.
         
 Diagram that shows how your PoC examples work together including their **routes**
 
@@ -63,16 +67,7 @@ Discussion of the **chart library** you used
 
 Code of the PoC will be per area
 
-    /public/scripts/auth.js: in this file we are implementing authentications
 
-    /public/scripts/dashboard.js: in this file we are implementing data extraction
-    from our database and prepare our data for chart and grid functions
-
-    /public/nav.js: this script is responsible for determining if the user is admin or not.
-
-    /public/setting.js: this script handles some logic for the settings page.
-
-    /public/users.js: this script handles CRUD operations on users. Only for admin users.
 
 App diagram and wireframes to implement for final project
 
