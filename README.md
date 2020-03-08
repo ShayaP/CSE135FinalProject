@@ -60,6 +60,9 @@ Discussion of the **chart library** you used
     etc.) and then uses appropriate calls to the Zing Chart library to display the
     data on the dashboard.
 
+![Example Charts for Browser Usage](/resources/browser.png)
+![Example Charts for Enabled Features](/resources/browser2.png)
+
     Relevant Files:
          /public/scripts/dashboard.js
          /public/dashboard-new.html
