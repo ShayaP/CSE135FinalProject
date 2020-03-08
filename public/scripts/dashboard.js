@@ -47,23 +47,23 @@ function getSitesArray(db) {
 
 function getBrowser(userAgent) {
   // Inspired by code from https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser 
-  if((navigator.userAgent.indexOf("Opera") || navigator.userAgent.indexOf('OPR')) != -1 ) 
+  if((userAgent.indexOf("Opera") || userAgent.indexOf('OPR')) != -1 ) 
   {
       return 'Opera';
   }
-  else if(navigator.userAgent.indexOf("Chrome") != -1 )
+  else if(userAgent.indexOf("Chrome") != -1 )
   {
       return 'Chrome';
   }
-  else if(navigator.userAgent.indexOf("Safari") != -1)
+  else if(userAgent.indexOf("Safari") != -1)
   {
       return 'Safari';
   }
-  else if(navigator.userAgent.indexOf("Firefox") != -1 ) 
+  else if(userAgent.indexOf("Firefox") != -1 ) 
   {
       return 'Firefox';
   }
-  else if((navigator.userAgent.indexOf("MSIE") != -1 ) || (!!document.documentMode == true )) //IF IE > 10
+  else if((userAgent.indexOf("MSIE") != -1 ) || (!!document.documentMode == true )) //IF IE > 10
   {
     return 'IE';
   }  
