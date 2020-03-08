@@ -38,7 +38,7 @@ Diagram that shows how your PoC examples work together including their **routes*
     for reporting and analytics work equally well and without the complexity overhead of
     a framework like React.
 
-![Preview of /dashboard.html route](/resources/dashboard.png)
+![Preview of /dashboard.html route](/resources/dashboard_draft.png)
 
     Routing to the following pags through static files:
     /public/dashboard-new.html,
