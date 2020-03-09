@@ -48,15 +48,14 @@ Diagram that shows how your PoC examples work together including their **routes*
 
 Discussion of the **grid library** you used 
     
-    For our grids, we will use Zing Grid. Zing Grid plain JavaScript
-    web component that natively works with all frameworks, styles easily
-    and has many built-in grid features
+    For our grids, we used the table markdown of the Bulma CSS framework
+    (as used in HW3).
     
 ![Example grids for Browser Usage](public/media/showDB_table.png)
     
     Relevant Files:
-    /public/scripts/dashboard.js
-    /public/dashboard-new.html
+    /public/showdb.html
+    /public/scripts/reportertest.js
 
 Discussion of the **chart library** you used 
 
@@ -99,8 +98,8 @@ Discussion of the **chart library** you used
 **Grid**
 
     Relevant Files:
-        /public/scripts/dashboard.js
-        /public/dashboard-new.html
+    /public/showdb.html
+    /public/scripts/reportertest.js
 
 **Charts**
 
