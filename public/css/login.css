@@ -9,3 +9,11 @@
 .submit {
   text-align: center;
 }
+
+.is-danger {
+  color: red;
+}
+
+.is-success {
+  color: green;
+}

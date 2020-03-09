@@ -74,6 +74,18 @@
       {
         "source": "/registerAdminUser",
         "function": "registerAdminUser"
+      },
+      {
+        "source": "/deleteUser",
+        "function": "deleteUser"
+      },
+      {
+        "source": "/updateUser",
+        "function": "updateUser"
+      },
+      {
+        "source": "/createUser",
+        "function": "createUser"
       }
     ]
   }

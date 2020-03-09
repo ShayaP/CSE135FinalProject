@@ -6,16 +6,18 @@ firebase.auth().onAuthStateChanged(user => {
   }
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-  var elems = document.querySelectorAll('.modal');
-  M.Modal.init(elems, {});
+let selects;
+let modals;
 
-  elems = document.querySelectorAll('select');
-  M.FormSelect.init(elems, {});
+document.addEventListener('DOMContentLoaded', function() {
+  modals = document.querySelectorAll('.modal');
+  M.Modal.init(modals, {});
+
+  selects = document.querySelectorAll('select');
+  M.FormSelect.init(selects, {});
 });
 
-function renderUseresPage(user) {
-  console.log(user.uid);
+function renderUseresPage(user = firebase.auth().currentUser) {
   fetch('/getUsers', {
     method: 'POST',
     credentials: 'include',
@@ -38,46 +40,61 @@ function fillInTable(users) {
       userType = 'admin';
     }
     tableBodyEl.innerHTML += `
-      <tr onmouseover="addHoverEffect(this)" onmouseout="removeHoverEffect(this)">
+      <tr>
         <th>${user.uid}</th>
         <td>${user.email}</td>
         <td>${user.emailVerified}</td>
         <td>${userType}</td>
         <td>${user.metadata.lastSignInTime}</td>
         <td>${user.metadata.creationTime}</td>
-        <td><a href="#" class="waves-effect waves-green btn valign"><i class="material-icons">edit</i>Edit</a></td>
-        <td><a href="#" class="waves-effect waves-green btn valign"><i class="material-icons">delete</i>Remove</a></td>
+        <td><a href="#editModal" class="waves-effect waves-light btn modal-trigger mt-3 valign" onclick="storeUID(this)" data-uid="${user.uid}"><i class="material-icons">edit</i>Edit</a></td>
+        <td><button data-uid="${user.uid}" onclick="deleteUser(this, renderUseresPage)" type="button" class="waves-effect waves-green btn valign"><i class="material-icons">delete</i>Remove</button></td>
       </tr>
     `;
   }
 }
 
-function addHoverEffect(e) {
-  e.classList.add('is-selected');
-}
-
-function removeHoverEffect(e) {
-  e.classList.remove('is-selected');
-}
-
 function addUser(form) {
   var formData = new FormData(form);
   var data = Object.fromEntries(formData);
-  firebase
-    .auth()
-    .createUserWithEmailAndPassword(data.email, data.password)
-    .then(res => {
-      if (data.type === 'admin') {
-        fetch('/registerAdminUser', {
-          method: 'POST',
-          credentials: 'include',
-          body: JSON.stringify({ uid: res.user.uid })
-        }).catch(err => {
-          console.log('Got error: ', err);
-        });
-      }
+  fetch('/createUser', {
+    method: 'POST',
+    credentials: 'include',
+    body: JSON.stringify(data)
+  })
+    .then(() => {
+      renderUseresPage();
+      let modal = M.Modal.getInstance(document.getElementById('addModal'));
+      modal.close();
     })
     .catch(err => {
       console.log(err);
     });
+}
+
+function editUser(form) {
+  let uid = form.dataset.uid;
+  var formData = new FormData(form);
+  var data = Object.fromEntries(formData);
+  data.uid = uid;
+
+  fetch('/updateUser', {
+    method: 'POST',
+    credentials: 'include',
+    body: JSON.stringify(data)
+  })
+    .then(() => {
+      renderUseresPage();
+      let modal = M.Modal.getInstance(document.getElementById('editModal'));
+      modal.close();
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
+
+function storeUID(e) {
+  let uid = e.dataset.uid;
+  let el = document.getElementById('editUserForm');
+  el.dataset.uid = uid;
 }

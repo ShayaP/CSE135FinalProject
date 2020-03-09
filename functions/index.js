@@ -76,13 +76,54 @@ const collectSchema = joi.object({
     .required()
 });
 
-exports.dashboard = functions.https.onRequest((req, res) => {});
+exports.updateUser = functions.https.onRequest((req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  res.setHeader('Cache-Control', 'private'); // required for cookie according to documentation
+  let body = JSON.parse(req.body);
+  const uid = body.uid;
+  const email = body.email;
+  const type = body.type;
+  admin
+    .auth()
+    .updateUser(uid, { email })
+    .then(() => {
+      if (type === 'admin') {
+        changeAdminPrivilages(uid, true);
+      } else {
+        changeAdminPrivilages(uid, false);
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).end();
+    });
+});
 
-exports.speed = functions.https.onRequest((req, res) => {});
+exports.deleteUser = functions.https.onRequest((req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  res.setHeader('Cache-Control', 'private'); // required for cookie according to documentation
+  const uid = JSON.parse(req.body).uid;
+  admin
+    .auth()
+    .deleteUser(uid)
+    .then(() => {
+      console.log('success');
+      res.end();
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).end();
+    });
+});
 
-exports.browsers = functions.https.onRequest((req, res) => {});
-
-exports.events = functions.https.onRequest((req, res) => {});
+function changeAdminPrivilages(uid, adminBool) {
+  admin
+    .auth()
+    .setCustomUserClaims(uid, { admin: adminBool })
+    .catch(error => {
+      console.log(error);
+    });
+}
 
 exports.registerAdminUser = functions.https.onRequest((req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
@@ -115,6 +156,29 @@ exports.checkUserType = functions.https.onRequest((req, res) => {
       } else {
         res.json({ type: 'regular' });
       }
+    });
+});
+
+exports.createUser = functions.https.onRequest((req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  res.setHeader('Cache-Control', 'private'); // required for cookie according to documentation
+  let body = JSON.parse(req.body);
+  const email = body.email;
+  const pass = body.pass;
+  admin
+    .auth()
+    .createUser({
+      email: email,
+      emailVerified: false,
+      password: pass,
+      disabled: false
+    })
+    .then(() => {
+      res.end();
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).end();
     });
 });
 

@@ -16,7 +16,6 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./css/users.css" />
-    <script src="./scripts/main.js"></script>
     <script src="./scripts/auth.js"></script>
     <script src="./scripts/nav.js"></script>
     <script src="./scripts/users.js"></script>
@@ -112,6 +111,41 @@
             </div>
             <div class="row">
               <button type="submit" class="btn">Create</button>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <a href="#!" class="modal-close waves-effect waves-green btn-flat"
+            >Cancel</a
+          >
+        </div>
+      </div>
+
+      <!-- Edit User Modal -->
+      <div id="editModal" class="modal modal-fixed-footer">
+        <div class="modal-content">
+          <form
+            id="editUserForm"
+            onsubmit="javascript:editUser(this); return false;"
+          >
+            <div class="row">
+              <div class="input-field col s12">
+                <input id="email" type="email" name="email" class="validate" />
+                <label for="email">Email</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <select name="type">
+                  <option value="" disabled selected>Choose your option</option>
+                  <option value="regular">Regular</option>
+                  <option value="admin">Admin</option>
+                </select>
+                <label>Select Type</label>
+              </div>
+            </div>
+            <div class="row">
+              <button type="submit" class="btn">Edit</button>
             </div>
           </form>
         </div>
