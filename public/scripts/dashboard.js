@@ -23,7 +23,9 @@ function render(json) {
   dbObject = json;
   renderBrowserChart(dbObject);
   renderLanguageChart(dbObject);
-  renderFeatureChart(dbObject);
+  renderFeatureChart(dbObject)
+  createBrowserGrid(dbObject);
+
 }
 
 function getUserListData(db) {
@@ -147,7 +149,7 @@ function renderPieChart(data, chartName, title) {
 }
 
 function renderBrowserChart(dbObject) {
-  console.log(dbObject);
+  //console.log(dbObject);
   let browserCount = getBrowserData(dbObject);
   renderPieChart(browserCount, 'browser-chart', 'Page Loads by Browser');
 }
@@ -275,7 +277,6 @@ function renderBarChart(data, chartName, labels, title) {
             }
     ]
     }
-
   zingchart.render({ 
     id : chartName, 
     data : myConfig, 
@@ -283,3 +284,62 @@ function renderBarChart(data, chartName, labels, title) {
     width: 400 
   });
 }
+
+function createBrowserGrid(db) {
+
+    const GridConfig = (data) => {
+        return {
+            editor: true,
+            pager: true,
+            pageSize:30,
+            layout: 'column',
+            layoutControls: true,
+            pager: 'top',
+            columns: [],
+            theme: 'android',
+            data
+        }
+    }
+    let list = [];
+    let reporterInfo = {};
+    Object.keys(db).forEach((element) => {
+        reporterInfo = db[element];
+        for (const url in reporterInfo) {
+            let dataDict = {};
+            let data = reporterInfo[url];
+            dataDict["User"] = element;
+            dataDict["url"] = url;
+            dataDict["language"]= data.language;
+            dataDict["User Agent"] =  data.userAgent;
+            dataDict["maxScreenWidth"] = data.maxScreenWidth;
+            dataDict["maxScreenHeight"] = data.maxScreenHeight;
+            dataDict["currScreenWidth"] = data.currScreenWidth;
+            dataDict["currScreenHeight"] = data.currScreenHeight;
+            dataDict["effectiveConnectionType"] = data.effectiveConnectionType;
+            dataDict["cookieEnabled"] = data.cookieEnabled;
+            dataDict["JSEnabled"] = data.JSEnabled;
+            dataDict["cssEnabled"] = data.cssEnabled;
+            dataDict["imagesEnabled"] = data.imagesEnabled;
+            list.push(dataDict);
+        }
+
+    });
+        console.log(list);
+        let gridConfig = GridConfig(list);
+        let gridRef = new ZingGrid(gridConfig);
+        document.querySelector('#yourFirstGrid').appendChild(gridRef);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
