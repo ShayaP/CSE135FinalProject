@@ -6,15 +6,17 @@
     <title>Analytics - Speed</title>
     <link type="text/css" rel="stylesheet" href="/css/materialize/materialize.css"/>
     <link type="text/css" rel="stylesheet" href="/css/dashboard.css"/>
+    <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+    <script src="https://cdn.zinggrid.com/zinggrid.min.js"></script>
     <script src="/scripts/materialize/materialize.js"></script>
-    <script src="/scripts/dashboard.js"></script>
+    <script src="/scripts/speed.js"></script>
     <!-- for icons: -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
     <nav>
         <div class="nav-wrapper blue darken-2">
-          <a href="/" class="brand-logo" style="font-size: 1.6em; margin-left: 0.7em;">Analytics - Dashboard</a>
+          <a href="/" class="brand-logo" style="font-size: 1.6em; margin-left: 0.7em;">Analytics - Speed</a>
           <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li></li>
             <li><a class="dropdown-trigger waves-effect waves-light" data-target="dropdown-account"><i style="font-size: 3em" class="material-icons">account_circle</i></a></li>
@@ -68,7 +70,11 @@
                 </div>
             </div>
         </div>
+        <!--grid-->
+        <div id="speedGrid"></div>
+
     </div>
+
     </main>
 
     <footer style="background-color: white;" class="page-footer">

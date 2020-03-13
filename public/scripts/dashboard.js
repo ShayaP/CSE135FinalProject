@@ -23,9 +23,8 @@ function render(json) {
   dbObject = json;
   renderBrowserChart(dbObject);
   renderLanguageChart(dbObject);
-  renderFeatureChart(dbObject)
+  renderFeatureChart(dbObject);
   createBrowserGrid(dbObject);
-
 }
 
 function getUserListData(db) {
@@ -285,6 +284,7 @@ function renderBarChart(data, chartName, labels, title) {
   });
 }
 
+
 function createBrowserGrid(db) {
 
     const GridConfig = (data) => {
@@ -324,11 +324,11 @@ function createBrowserGrid(db) {
         }
 
     });
-        console.log(list);
         let gridConfig = GridConfig(list);
         let gridRef = new ZingGrid(gridConfig);
-        document.querySelector('#yourFirstGrid').appendChild(gridRef);
+        document.querySelector('#browserGrid').appendChild(gridRef);
 }
+
 
 
 
