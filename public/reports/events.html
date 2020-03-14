@@ -5,31 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analytics - Events</title>
     <link type="text/css" rel="stylesheet" href="/css/materialize/materialize.css"/>
-    <link type="text/css" rel="stylesheet" href="/css/dashboard.css"/>
+    <link rel="stylesheet" href="/css/reportertest.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"/>
+    <link rel="stylesheet" href="/public/css/main.css" />
+    <link type="text/css" rel="stylesheet" href="../css/dashboard.css"/>
+    <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+    <script src="https://cdn.zinggrid.com/zinggrid.min.js"></script>
     <script src="/scripts/materialize/materialize.js"></script>
-    <script src="/scripts/dashboard.js"></script>
+
     <!-- for icons: -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-    <nav>
-        <div class="nav-wrapper blue darken-2">
-          <a href="/" class="brand-logo" style="font-size: 1.6em; margin-left: 0.7em;">Analytics - Dashboard</a>
-          <ul id="nav-mobile" class="right hide-on-med-and-down">
+<nav>
+    <div class="nav-wrapper blue darken-2">
+        <a href="/" class="brand-logo" style="font-size: 1.6em; margin-left: 0.7em;">Analytics - Events</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li></li>
             <li><a class="dropdown-trigger waves-effect waves-light" data-target="dropdown-account"><i style="font-size: 3em" class="material-icons">account_circle</i></a></li>
-          </ul>
-        </div>
-        <!-- Dropdown Structure -->
-        <div id="dropdown-account" class="dropdown-content">
+        </ul>
+    </div>
+    <!-- Dropdown Structure -->
+    <div id="dropdown-account" class="dropdown-content">
         <ul>
             <li><a href="#!" style="color: #444444;">Profile Name</a></li>
-            <li><a href="/admin.html"><i class="material-icons">settings_applications</i>Admin Control Center</a></li>
-            <li><a href="/settings.html"><i class="material-icons">settings</i>Profile Settings</a></li>
+            <li><a href="../users.html"><i class="material-icons">settings_applications</i>Admin Control Center</a></li>
+            <li><a href="../setting.html"><i class="material-icons">settings</i>Profile Settings</a></li>
             <li><a href="/logout"><i class="material-icons">exit_to_app</i>Logout</a></li>
         </ul>
-        </div>
-    </nav>
+    </div>
+</nav>
 
     <main>
     <div class="container">
@@ -68,7 +73,49 @@
                 </div>
             </div>
         </div>
+
+
     </div>
+
+
+    <section class="main-content columns is-fullheight" style="width: 100%;">
+        <aside class="column is-2 is-narrow-mobile is-fullheight section is-hidden-mobile">
+            <p class="menu-label is-hidden-touch">User IDs</p>
+            <ul class="menu-list" id="user-list">
+                <li>
+                </li>
+            </ul>
+        </aside>
+
+        <div class="container column is-10">
+            <button
+                    class="button is-danger"
+                    type="button"
+                    style="margin: 10px; margin-left:25%; text-align: center;"
+                    onclick="refreshData()"
+            >
+                Refresh Data
+            </button>
+            <div style="margin-bottom: 10%; margin-left:25%;width: 90%;">
+                <h1 class="title is-4">Event Information Collected</h1>
+                <ul class="content" id="eventInfo" onclick="expandList(event)"></ul>
+            </div>
+            </div>
+
+        <div class="modal" id="modal">
+        <div class="modal-background"></div>
+        <div class="modal-content" id="modalContent"></div>
+        <button
+                class="modal-close is-large "
+                style="background-color: #5d4037"
+                aria-label="close"
+                onclick="closeModal(event)"
+        ></button>
+        </div>
+
+    </section>
+
+
     </main>
 
     <footer style="background-color: white;" class="page-footer">
@@ -78,5 +125,6 @@
           </div>
         </div>
     </footer>
+    <script src="../scripts/events.js"></script>
 </body>
 </html>
