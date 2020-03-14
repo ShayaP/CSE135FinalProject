@@ -278,9 +278,9 @@ function renderBarChart(data, chartName, labels, title) {
     }
   zingchart.render({ 
     id : chartName, 
-    data : myConfig, 
-    height: 600, 
-    width: 400 
+    data : myConfig,
+    //height: 600, 
+    width: "100%"
   });
 }
 
