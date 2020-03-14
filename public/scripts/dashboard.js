@@ -24,7 +24,10 @@ function render(json) {
   renderBrowserChart(dbObject);
   renderLanguageChart(dbObject);
   renderFeatureChart(dbObject);
-  createBrowserGrid(dbObject);
+  //createBrowserGrid(dbObject);
+
+  renderDOMInteractiveChart(dbObject);
+  renderTotalTimeChart(dbObject);
 }
 
 function getUserListData(db) {
@@ -44,6 +47,21 @@ function getSitesArray(db) {
     })
   })
   return list;
+}
+
+function getArrayBySite(db) {
+  let users = getUserListData(db);
+  let mapping = {};
+  users.forEach((user) => {
+    Object.keys(user).forEach((element) => {
+      let mapKey = element.substr(0,element.indexOf(' '));
+      if (!mapping.hasOwnProperty(mapKey)) {
+        mapping[mapKey] = [];
+      }
+      mapping[mapKey].push(user[element]);
+    })
+  })
+  return mapping;
 }
 
 function getBrowser(userAgent) {
@@ -204,8 +222,8 @@ function getFeaturesData(dbObject) {
   javascript = javascript / totalClicks * 100;
   cookies = cookies / totalClicks * 100;
 
-  console.log(css);
-  console.log(totalClicks);
+  //console.log(css);
+  //console.log(totalClicks);
 
   let data = [css, images, cookies, javascript];
   let labels = ["CSS", "Images", "Cookies", "JS"];
@@ -329,17 +347,220 @@ function createBrowserGrid(db) {
         document.querySelector('#browserGrid').appendChild(gridRef);
 }
 
+function getTimeData(dbObject) {
+  
+}
+
+function calculateStatistics(arr) {
+  let m = quantile(arr, 0.5);
+  let q1 = quantile(arr, 0.25);
+  let q3 = quantile(arr, 0.75);
+  let statsMin = getMin(arr);
+  let statsMax = getMax(arr);
+
+  return [statsMin, q1, m, q3, statsMax];
+}
+
+function renderBoxPlot(labels, data, title, chartName) {
+  let timeChartConfig = {
+    "graphset":[
+        {
+            "title": {
+              "fontColor": chartFontColor,
+              "text": title,
+              "align": "left",
+              "offsetX": 10,
+              "fontSize": 20
+            },
+            "type":"hboxplot",
+            "background-color":"white",
+            "plot":{
+                "dataStationName":labels,
+                },
+            /*"scale-x":{
+                "zooming":true,
+                "ranged":true,
+                "labels":sites,
+                //"format":"%v",
+                "tick":{
+                    "-visible":false
+                    },
+                "visible": false,
+                "item":{
+                    "font-size":"14px"
+                    },
+                "guide":{
+                    "lineWidth":1,
+                    "visible":true
+                    },
+                //"minValue":0,
+                //"maxValue":600
+                },*/
+            "scale-x": {
+                  "offset-start": 40,
+                  "offset-end": 40,
+                  "line-color": "none",
+                  "labels": labels,
+                  "tick": {
+                    "visible": false
+                  },
+                  "item": {
+                    "font-size": 14
+                  },
+                  "guide": {
+                    "visible": false
+                  }
+            },
+            "scale-y":{
+                "label":{
+                    "text":"Time [ms]"
+                    },
+                "ref-line":{
+                    "visible":true,
+                    "line-color":"darkgrey",
+                    "line-width":1,
+                    "line-style":"solid"
+                    },
+                "format":"%v",
+                "line-color":"darkgrey",
+                "tick":{
+                    "line-color":"darkgrey"
+                    },
+                "item":{
+                    "font-size":"14px"
+                    },
+                "guide":{
+                    "visible":true
+                    }
+                },
+            "options":{
+                "box":{
+                    "border-color":"black",
+                    "border-width":1,
+                    "tooltip":{
+                        "paddingBottom":5,
+                        "background-color":"darkgrey",
+                        "border-color":"lightgrey",
+                        "border-radius":10,
+                        "text":"%data-station-name"
+                        }
+                    }
+                },
+            "series":[
+                {
+                    "barWidth":25,
+                    "data-box":data
+                    }
+            ]
+            }
+    ]
+  };
+
+  zingchart.render({ 
+    id : chartName, 
+    data : timeChartConfig,
+    //height: 600, 
+    width: "100%"
+  });
+}
+
+function renderDOMInteractiveChart(dbObject) {
+  let pages = getSitesArray(dbObject);
+  let pagesBySite = getArrayBySite(dbObject);
+
+  let domInteractive = pages.map(element => element.navTiming.domInteractive)
+                            .filter((e) => typeof(e) === "number");
+
+  let statsDomInteractive = calculateStatistics(domInteractive);
+
+  let stats = [statsDomInteractive];
+  let sites = ["Total"];
+  Object.keys(pagesBySite).forEach((key) => {
+    sites.push(key);
+    let timeData = pagesBySite[key].map(element => element.navTiming.domInteractive)
+                                  .filter((e) => typeof(e) === "number");
+    
+    let statsData = calculateStatistics(timeData);
+    stats.push(statsData);
+  });
+
+  renderBoxPlot(sites, stats, "DOM Interactive", "time-box-chart");
+}
+
+function renderTotalTimeChart(dbObject) {
+  let pages = getSitesArray(dbObject);
+  let pagesBySite = getArrayBySite(dbObject);
+
+  console.log(pages.filter(element => element.navTiming.responseEnd !== 0 && element.navTiming.requestStart !== 0 && typeof(element.navTiming.responseEnd) === "number" && typeof(element.navTiming.requestStart) === "number"));
+  console.log(pages.filter(element => element.navTiming.responseEnd !== 0 && element.navTiming.requestStart !== 0 && typeof(element.navTiming.responseEnd) === "number" && typeof(element.navTiming.requestStart) === "number")
+    .map(element => element.navTiming.responseEnd - element.navTiming.requestStart));
+  let totalTime = pages.filter(element => element.navTiming.responseEnd !== 0 && element.navTiming.requestStart !== 0 && typeof(element.navTiming.responseEnd) === "number" && typeof(element.navTiming.requestStart) === "number")
+                            .map(element => element.navTiming.responseEnd - element.navTiming.requestStart)
+                            .filter((e) => typeof(e) === "number");
+
+  let statsTotalTime = calculateStatistics(totalTime);
+
+  let stats = [statsTotalTime];
+  let sites = ["Total"];
+  Object.keys(pagesBySite).forEach((key) => {
+    sites.push(key);
+    let timeData = pagesBySite[key].filter(element => element.navTiming.responseEnd !== 0 && element.navTiming.requestStart !== 0 && typeof(element.navTiming.responseEnd) === "number" && typeof(element.navTiming.requestStart) === "number")
+                                  .map(element => element.navTiming.responseEnd - element.navTiming.requestStart)
+                                  .filter((e) => typeof(e) === "number");
+    
+    let statsData = calculateStatistics(timeData);
+    stats.push(statsData);
+  });
+
+  renderBoxPlot(sites, stats, "Total Loading Time", "total-time-box-chart");
+}
 
 
+/// HELPER FUNCTIONS
 
 
+/* inspired by: https://jonlabelle.com/snippets/view/javascript/calculate-mean-median-mode-and-range-in-javascript */
+/**
+ * The "median" is the "middle" value in the list of numbers.
+ *
+ * @param {Array} numbers An array of numbers.
+ * @return {Number} The calculated median value from the specified numbers.
+ */
+function median(numbers) {
+  // median of [3, 5, 4, 4, 1, 1, 2, 3] = 3
+  var median = 0, numsLen = numbers.length;
+  numbers.sort();
 
+  if (
+      numsLen % 2 === 0 // is even
+  ) {
+      // average of two middle numbers
+      median = (numbers[numsLen / 2 - 1] + numbers[numsLen / 2]) / 2;
+  } else { // is odd
+      // middle number only
+      median = numbers[(numsLen - 1) / 2];
+  }
 
+  return median;
+}
 
+const getMax = (numbers) => numbers.reduce((x,y) => x >= y ? x : y);
+const getMin = (numbers) => numbers.reduce((x,y) => x <= y ? x : y);
 
+/* inspired by https://jonlabelle.com/snippets/view/javascript/calculate-mean-median-mode-and-range-in-javascript */
+// alternative mean/average method (from https://www.30secondsofcode.org/snippet/average):
+const mean = (...numbers) => numbers.reduce((acc, val) => acc + val, 0) / numbers.length;
 
-
-
-
-
-
+/* inspired by: https://stackoverflow.com/questions/48719873/how-to-get-median-and-quartiles-percentiles-of-an-array-in-javascript-or-php */
+const quantile = (arr, q) => {
+    arr.sort((a,b) => a-b);
+    const sorted = arr;
+    const pos = (sorted.length - 1) * q;
+    const base = Math.floor(pos);
+    const rest = pos - base;
+    if (sorted[base + 1] !== undefined) {
+        return sorted[base] + rest * (sorted[base + 1] - sorted[base]);
+    } else {
+        return sorted[base];
+    }
+};
