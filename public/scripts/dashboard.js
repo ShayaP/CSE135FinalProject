@@ -24,7 +24,6 @@ function render(json) {
   renderBrowserChart(dbObject);
   renderLanguageChart(dbObject);
   renderFeatureChart(dbObject);
-  //createBrowserGrid(dbObject);
 
   renderDOMInteractiveChart(dbObject);
   renderTotalTimeChart(dbObject);
@@ -161,8 +160,8 @@ function renderPieChart(data, chartName, title) {
  zingchart.render({ 
    id : chartName, 
    data : browserChartConfig, 
-   height: 400, 
-   width: 600 
+   //height: , 
+   width: "100%"
  });
 }
 
@@ -233,8 +232,8 @@ function renderFeatureChart(dbObject) {
 }
 
 function renderBarChart(data, chartName, labels, title) {
-  fullBar = [];
-  for (i = 0; i < data.length; i++) {
+  let fullBar = [];
+  for (let i = 0; i < data.length; i++) {
     fullBar.push(100);
   }
   let myConfig = {

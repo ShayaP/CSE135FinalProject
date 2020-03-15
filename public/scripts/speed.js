@@ -3,21 +3,21 @@ document.addEventListener('DOMContentLoaded', function() {
     var instances = M.Dropdown.init(elems, {coverTrigger: false, constrainWidth: false});
 });
 
-document.addEventListener("DOMContentLoaded", refreshData);
+document.addEventListener("DOMContentLoaded", refreshData2);
 
 var dbObject;
 
-function refreshData() {
+function refreshData2() {
     fetch('/query')
         .then(response => {
             return response.json();
         })
         .then(json => {
-            render(json);
+            renderSpeedGrid(json);
         });
 }
 
-function render(json) {
+function renderSpeedGrid(json) {
     dbObject = json;
     createSpeedGrid(dbObject);
 }
