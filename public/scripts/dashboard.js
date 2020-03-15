@@ -488,11 +488,6 @@ function renderTotalTimeChart(dbObject) {
   let pages = getSitesArray(dbObject);
   let pagesBySite = getArrayBySite(dbObject);
 
-  consoleconsole.log("objects");
-  console.log(pages.filter(element => element.navTiming.responseEnd !== 0 && element.navTiming.requestStart !== 0 && typeof(element.navTiming.responseEnd) === "number" && typeof(element.navTiming.requestStart) === "number").map(element => element.navTiming));
-  console.log("time");
-  console.log(pages.filter(element => element.navTiming.responseEnd !== 0 && element.navTiming.requestStart !== 0 && typeof(element.navTiming.responseEnd) === "number" && typeof(element.navTiming.requestStart) === "number")
-    .map(element => element.navTiming.responseEnd - element.navTiming.requestStart));
   let totalTime = pages.filter(element => element.navTiming.responseEnd !== 0 && element.navTiming.requestStart !== 0 && typeof(element.navTiming.responseEnd) === "number" && typeof(element.navTiming.requestStart) === "number")
                             .map(element => element.navTiming.responseEnd - element.navTiming.requestStart)
                             .filter((e) => typeof(e) === "number");
