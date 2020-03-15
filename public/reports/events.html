@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analytics - Events</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"/>
     <link type="text/css" rel="stylesheet" href="/css/materialize/materialize.css"/>
     <link rel="stylesheet" href="/css/reportertest.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"/>
     <link rel="stylesheet" href="/public/css/main.css" />
     <link type="text/css" rel="stylesheet" href="../css/dashboard.css"/>
     <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
@@ -56,23 +56,20 @@
                 <a href="/" class="waves-light waves-effect btn">&larr; Back</a>
             </div>
         </div>
-        <section class="main-content columns is-fullheight" style="width: 100%;">
-            <aside class="column is-2 is-narrow-mobile is-fullheight section is-hidden-mobile">
-                <p class="menu-label is-hidden-touch">User IDs</p>
+        <div class="row">
+            <div class="col s2">
+                <p>User IDs</p>
                 <ul class="menu-list" id="user-list">
                     <li>
                     </li>
                 </ul>
-            </aside>
+            </div>
 
-            <div class="container column is-10">
-                <div style="margin-bottom: 10%; margin-left:25%;width: 90%;">
-                    <h1 class="title is-4">Event Information Collected</h1>
-                    <ul class="content" id="eventInfo" onclick="expandList(event)"></ul>
-                </div>
-                </div>
+            <div class="col s10">
+                <h1 class="title is-4">Event Information Collected</h1>
+                <ul class="content" id="eventInfo" onclick="expandList(event)"></ul>
 
-            <div class="modal" id="modal">
+            <!--<div class="modal" id="modal">
             <div class="modal-background"></div>
             <div class="modal-content" id="modalContent"></div>
             <button
@@ -81,9 +78,22 @@
                     aria-label="close"
                     onclick="closeModal(event)"
             ></button>
+            </div>-->
+
+            <!-- Modal Structure -->
+            <div id="modal" class="modal">
+                <div class="modal-content">
+                <h4>Modal Header</h4>
+                <p>A bunch of text</p>
+                </div>
+                <div class="modal-footer">
+                <a href="# class="modal-close waves-effect waves-green btn-flat" onclick="closeModal(event)">Close</a>
+                </div>
             </div>
 
-        </section>
+            </div>
+
+        </div>
     </main>
 
     <footer style="background-color: white;" class="page-footer">
