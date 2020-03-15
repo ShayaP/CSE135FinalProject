@@ -519,21 +519,44 @@ function renderResourceTimingChart(dbObject) {
   };
 
   let pages = getSitesArray(dbObject);
-
   let resourceTiming = pages.map(element => element.resourceTiming)
-                            .map(element => element.responseEnd - element.responseStart);
 
-  let names = resourceTiming.map(element => element.name);
+  let timings = [];
+
+  resourceTiming.forEach(element => {
+    element.forEach(e => {
+      timings.push(e);
+    });
+  });
+
+  let totalTimes = timings.map(element => element.responseEnd - element.responseStart);
+
+  let names = timings.map(element => element.name);
   let fileEndings = names.map(element => getFileEnding(element));
+
+  let types = {
+    "png": "Image",
+    "jpg": "Image",
+    "gif": "Image",
+    "ico": "Image",
+    "webp": "Video",
+    "css": "CSS",
+    "html": "HTML",
+    "js": "JavaScript"
+  };
 
   let data = {};
 
   for (let i = 0; i < fileEndings.length; i++) {
-    if (!data.hasOwnProperty(names[i])) {
-      data[names[i]] = 0;
+    let type = "Other";
+    if (types.hasOwnProperty(fileEndings[i])) {
+      type = types[fileEndings[i]];
     }
-    data[names[i]] += resourceTiming[i];
-  }
+    if (!data.hasOwnProperty(type)) {
+      data[type] = 0;
+    }
+    data[type] += totalTimes[i];
+  };
 
   renderPieChart(data, "resource-timing-chart", "Loading Time by Resource Type");
 }
