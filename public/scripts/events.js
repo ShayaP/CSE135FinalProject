@@ -15,6 +15,13 @@ function refreshData() {
         })
         .then(json => {
             render(json);
+            for (const user in json) {
+                renderUser(user);
+
+                console.log(user);
+                break;
+            }
+
         });
 }
 
@@ -42,14 +49,29 @@ function renderUser(userLocal) {
     let urlTableHTML = '';
     //   let resourceTableHTML = '';
 
+    let first = true;
+
     for (const url in reporterInfo) {
         let data = reporterInfo[url];
         console.log()
-        urlTableHTML += `
-      <li style="display: flex; justify-content: space-between;">
-        <span>${url}</span>
-      </li>
-    `;
+        if (first) {
+            let e = {target: {innerHTML: url, innerText: url}};
+            let newHTML = expandList(e);
+            console.log(newHTML);
+            urlTableHTML += `
+            <li style="display: flex; justify-content: space-between;">
+                <span>${newHTML}</span>
+            </li>
+            `;
+            first = false;
+        } else {
+            urlTableHTML += `
+            <li style="display: flex; justify-content: space-between;">
+                <span>${url}</span>
+            </li>
+            `;
+            first = false;
+        }
     }
     urlTable.innerHTML = urlTableHTML;
 }
@@ -111,8 +133,11 @@ function expandList(e) {
       </div>
   `;
 
+    if (e !== null) {
+        e.target.innerHTML = newHTML;
+    }
 
-    e.target.innerHTML = newHTML;
+    return newHTML;
 }
 
 function closeList(e) {
