@@ -166,7 +166,6 @@ function renderPieChart(data, chartName, title) {
 }
 
 function renderBrowserChart(dbObject) {
-  //console.log(dbObject);
   let browserCount = getBrowserData(dbObject);
   renderPieChart(browserCount, 'browser-chart', 'Page Loads by Browser');
 }
@@ -221,9 +220,6 @@ function getFeaturesData(dbObject) {
   images = images / totalClicks * 100;
   javascript = javascript / totalClicks * 100;
   cookies = cookies / totalClicks * 100;
-
-  //console.log(css);
-  //console.log(totalClicks);
 
   let data = [css, images, cookies, javascript];
   let labels = ["CSS", "Images", "Cookies", "JS"];
@@ -491,7 +487,9 @@ function renderTotalTimeChart(dbObject) {
   let pages = getSitesArray(dbObject);
   let pagesBySite = getArrayBySite(dbObject);
 
-  console.log(pages.filter(element => element.navTiming.responseEnd !== 0 && element.navTiming.requestStart !== 0 && typeof(element.navTiming.responseEnd) === "number" && typeof(element.navTiming.requestStart) === "number"));
+  console.log("objects");
+  console.log(pages.filter(element => element.navTiming.responseEnd !== 0 && element.navTiming.requestStart !== 0 && typeof(element.navTiming.responseEnd) === "number" && typeof(element.navTiming.requestStart) === "number").map(element => element.navTiming));
+  console.log("time");
   console.log(pages.filter(element => element.navTiming.responseEnd !== 0 && element.navTiming.requestStart !== 0 && typeof(element.navTiming.responseEnd) === "number" && typeof(element.navTiming.requestStart) === "number")
     .map(element => element.navTiming.responseEnd - element.navTiming.requestStart));
   let totalTime = pages.filter(element => element.navTiming.responseEnd !== 0 && element.navTiming.requestStart !== 0 && typeof(element.navTiming.responseEnd) === "number" && typeof(element.navTiming.requestStart) === "number")
