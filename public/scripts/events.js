@@ -91,7 +91,7 @@ function expandList(e) {
     newHTML += ` <ul class="content click-event">`;
     for (const d of data.mouseClickEvents) {
         newHTML += `
-    <li onclick="openModal(event)" data-event=${JSON.stringify(
+    <li data-target="modal" class="modal-trigger" data-event=${JSON.stringify(
             d
         )}>${d.timeStamp.toFixed(4)} - Mouse Click</li>
     `;
@@ -100,7 +100,7 @@ function expandList(e) {
     newHTML += `<ul class="content move-event">`;
     for (const d of data.mouseMoveEvents) {
         newHTML += `
-    <li onclick="openModal(event)" data-event=${JSON.stringify(
+    <li data-target="modal" class="modal-trigger" data-event=${JSON.stringify(
             d
         )}>${d.timeStamp.toFixed(4)} - Mouse Move</li>
     `;
@@ -109,7 +109,7 @@ function expandList(e) {
     newHTML += `<ul class="content keystroke-event">`;
     for (const d of data.keyEvents) {
         newHTML += `
-    <li onclick="openModal(event)" data-event=${JSON.stringify(
+    <li data-target="modal" class="modal-trigger" data-event=${JSON.stringify(
             d
         )}>${d.timeStamp.toFixed(4)} - Keystroke</li>
     `;
@@ -118,7 +118,7 @@ function expandList(e) {
     newHTML += `<ul class="content scroll-event">`;
     for (const d of data.scrollEvents) {
         newHTML += `
-    <li onclick="openModal(event)" data-event=${JSON.stringify(
+    <li data-target="modal" class="modal-trigger" data-event=${JSON.stringify(
             d
         )}>${d.timeStamp.toFixed(4)} - Scroll</li>
     `;
@@ -126,7 +126,7 @@ function expandList(e) {
     newHTML += `</ul>`;
     newHTML += `
         <ul class="content beforeunload-event">
-          <li onclick="openModal(event)" data-event=${JSON.stringify(
+          <li data-target="modal" class="modal-trigger" data-event=${JSON.stringify(
         data.beforeunload
     )}>${data.beforeunload.timeStamp.toFixed(4)} - Before Unload</li>
         </ul>
