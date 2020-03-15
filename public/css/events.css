@@ -11,13 +11,15 @@ table {
 }
 
 #eventLog {
-  max-height: 600px;
-  overflow-y: scroll;
+  /*max-height: 600px;
+  overflow-y: scroll;*/
   width: 100%;
 }
 
 #eventLog li {
-  padding: 10px;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  padding-left: 2em;
   font-size: medium;
   font-weight: 400;
 }
@@ -26,14 +28,14 @@ table {
   padding: 10px;
   font-size: larger;
   font-weight: 600;
-  width: 50%;
+  width: 100%;
 }
 
 #resourceInfo span {
   padding: 10px;
   font-size: larger;
   font-weight: 600;
-  width: 90%;
+  width: 100%;
 }
 
 #eventLog li:hover {
@@ -52,8 +54,12 @@ table {
 .scroll-event li,
 .beforeunload-event li,
 .idle-time li {
-  width: 70%;
-  margin: 0 auto;
+  width: 100%;
+  /*margin: 0 auto;*/
+}
+
+.my-content {
+  margin-bottom: 1em;
 }
 
 .click-event li {
@@ -79,16 +85,17 @@ table {
 .idle-time li {
   background-color: rgb(216, 232, 236);
 }
-
+/*
 .modal-content {
   height: 70%;
   width: 80%;
   overflow-y: scroll;
   background-color: #eee;
 }
-
+*/
 .my-modal-data-list {
   padding: 20px;
   height: 100%;
   width: 100%;
+  margin-top: .25em;
 }

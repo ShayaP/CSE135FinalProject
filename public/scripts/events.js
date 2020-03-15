@@ -6,6 +6,8 @@ let dbObject = {};
 let reporterInfo = {};
 let user = "";
 
+let userListClasses = "user-list-item collection-item";
+
 document.addEventListener("DOMContentLoaded", refreshData);
 
 function refreshData() {
@@ -17,8 +19,6 @@ function refreshData() {
             render(json);
             for (const user in json) {
                 renderUser(user);
-
-                console.log(user);
                 break;
             }
 
@@ -31,16 +31,19 @@ function render(json) {
     userList.innerHTML = '';
     for (const user in dbObject) {
         userList.innerHTML += `
-        <li>
-          <a href="#" class="" onclick="renderUser('${user}')">
-            ${user}
-          </a>
-        </li>`;
+        <a href="#!" id="user-${user}" onclick="renderUser('${user}')" class="${userListClasses}">${user}</a>`;
     }
-    renderUser(null);
+    //renderUser(null);
 }
 
 function renderUser(userLocal) {
+    let allUserElements = document.getElementsByClassName("user-list-item");
+    for (let i = 0; i < allUserElements.length; i++) {
+        let element = allUserElements[i];
+        element.setAttribute("class", userListClasses);
+    }
+    let activeUserElement = document.getElementById(`user-${userLocal}`);
+    activeUserElement.setAttribute("class", activeUserElement.getAttribute("class") + " active");
     user = userLocal;
     reporterInfo = dbObject[user];
     // Set the data for the static table
@@ -57,7 +60,6 @@ function renderUser(userLocal) {
         if (first) {
             let e = {target: {innerHTML: url, innerText: url}};
             let newHTML = expandList(e);
-            console.log(newHTML);
             urlTableHTML += `
             <li style="display: flex; justify-content: space-between;">
                 <span>${newHTML}</span>
@@ -84,49 +86,49 @@ function expandList(e) {
     if (!data) return;
 
 
-    newHTML += `<ul onclick="(event) => event.stopPropagation()" class="content idle-time">
-                <li>Idle Time: ${data.idleCount / 1000} s</li>
+    newHTML += `<ul onclick="(event) => event.stopPropagation()" class="my-content idle-time">
+                <li data-target="modal" class="modal-trigger my-modal-data-list">Idle Time: ${data.idleCount / 1000} s</li>
               </ul>
               `;
-    newHTML += ` <ul class="content click-event">`;
+    newHTML += ` <ul class="my-content click-event">`;
     for (const d of data.mouseClickEvents) {
         newHTML += `
-    <li data-target="modal" class="modal-trigger" data-event=${JSON.stringify(
+    <li data-target="modal" class="modal-trigger my-modal-data-list" data-event=${JSON.stringify(
             d
         )}>${d.timeStamp.toFixed(4)} - Mouse Click</li>
     `;
     }
     newHTML += `</ul>`;
-    newHTML += `<ul class="content move-event">`;
+    newHTML += `<ul class="my-content move-event">`;
     for (const d of data.mouseMoveEvents) {
         newHTML += `
-    <li data-target="modal" class="modal-trigger" data-event=${JSON.stringify(
+    <li data-target="modal" class="modal-trigger my-modal-data-list" data-event=${JSON.stringify(
             d
         )}>${d.timeStamp.toFixed(4)} - Mouse Move</li>
     `;
     }
     newHTML += `</ul>`;
-    newHTML += `<ul class="content keystroke-event">`;
+    newHTML += `<ul class="my-content keystroke-event">`;
     for (const d of data.keyEvents) {
         newHTML += `
-    <li data-target="modal" class="modal-trigger" data-event=${JSON.stringify(
+    <li data-target="modal" class="modal-trigger my-modal-data-list" data-event=${JSON.stringify(
             d
         )}>${d.timeStamp.toFixed(4)} - Keystroke</li>
     `;
     }
     newHTML += `</ul>`;
-    newHTML += `<ul class="content scroll-event">`;
+    newHTML += `<ul class="my-content scroll-event">`;
     for (const d of data.scrollEvents) {
         newHTML += `
-    <li data-target="modal" class="modal-trigger" data-event=${JSON.stringify(
+    <li data-target="modal" class="modal-trigger my-modal-data-list" data-event=${JSON.stringify(
             d
         )}>${d.timeStamp.toFixed(4)} - Scroll</li>
     `;
     }
     newHTML += `</ul>`;
     newHTML += `
-        <ul class="content beforeunload-event">
-          <li data-target="modal" class="modal-trigger" data-event=${JSON.stringify(
+        <ul class="my-content beforeunload-event">
+          <li data-target="modal" class="modal-trigger my-modal-data-list" data-event=${JSON.stringify(
         data.beforeunload
     )}>${data.beforeunload.timeStamp.toFixed(4)} - Before Unload</li>
         </ul>
