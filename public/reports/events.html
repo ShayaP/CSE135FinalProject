@@ -50,86 +50,40 @@
   </nav>
   <!-- End Nav -->
 
-    <main>
-    <div class="container">
-        <!-- Card -->
+    <main style="padding:1em;">
         <div class="row">
             <div class="col s12">
-                <div class="z-depth-2 card grey lighten-4">
-                <div class="card-content">
-                    <!-- card -->
-                    Speed
-                </div>
-                </div>
+                <a href="/" class="waves-light waves-effect btn">&larr; Back</a>
             </div>
         </div>
+        <section class="main-content columns is-fullheight" style="width: 100%;">
+            <aside class="column is-2 is-narrow-mobile is-fullheight section is-hidden-mobile">
+                <p class="menu-label is-hidden-touch">User IDs</p>
+                <ul class="menu-list" id="user-list">
+                    <li>
+                    </li>
+                </ul>
+            </aside>
 
-        <!-- Card -->
-        <div class="row">
-            <div class="col s12">
-                <div class="z-depth-2 card grey lighten-4">
-                <div class="card-content">
-                    <!-- card -->
-                    Browser
+            <div class="container column is-10">
+                <div style="margin-bottom: 10%; margin-left:25%;width: 90%;">
+                    <h1 class="title is-4">Event Information Collected</h1>
+                    <ul class="content" id="eventInfo" onclick="expandList(event)"></ul>
                 </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- Card -->
-        <div class="row">
-            <div class="col s12">
-                <div class="z-depth-2 card grey lighten-4">
-                <div class="card-content">
-                    <!-- card -->
-                    Events
-                </div>
-                </div>
-            </div>
-        </div>
-
-
-    </div>
-
-
-    <section class="main-content columns is-fullheight" style="width: 100%;">
-        <aside class="column is-2 is-narrow-mobile is-fullheight section is-hidden-mobile">
-            <p class="menu-label is-hidden-touch">User IDs</p>
-            <ul class="menu-list" id="user-list">
-                <li>
-                </li>
-            </ul>
-        </aside>
-
-        <div class="container column is-10">
+            <div class="modal" id="modal">
+            <div class="modal-background"></div>
+            <div class="modal-content" id="modalContent"></div>
             <button
-                    class="button is-danger"
-                    type="button"
-                    style="margin: 10px; margin-left:25%; text-align: center;"
-                    onclick="refreshData()"
-            >
-                Refresh Data
-            </button>
-            <div style="margin-bottom: 10%; margin-left:25%;width: 90%;">
-                <h1 class="title is-4">Event Information Collected</h1>
-                <ul class="content" id="eventInfo" onclick="expandList(event)"></ul>
-            </div>
+                    class="modal-close is-large "
+                    style="background-color: #5d4037"
+                    aria-label="close"
+                    onclick="closeModal(event)"
+            ></button>
             </div>
 
-        <div class="modal" id="modal">
-        <div class="modal-background"></div>
-        <div class="modal-content" id="modalContent"></div>
-        <button
-                class="modal-close is-large "
-                style="background-color: #5d4037"
-                aria-label="close"
-                onclick="closeModal(event)"
-        ></button>
-        </div>
-
-    </section>
-
-
+        </section>
     </main>
 
     <footer style="background-color: white;" class="page-footer">
