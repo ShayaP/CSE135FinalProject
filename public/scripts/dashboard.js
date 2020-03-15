@@ -321,6 +321,10 @@ function renderBoxPlot(labels, data, title, chartName) {
             },
             "type":"hboxplot",
             "background-color":"white",
+            "plotarea":{
+                "margin-left":"22%",
+                "margin-right":"15%"
+            },
             "plot":{
                 "dataStationName":labels,
                 },
@@ -352,7 +356,7 @@ function renderBoxPlot(labels, data, title, chartName) {
                     "visible": false
                   },
                   "item": {
-                    "font-size": 14
+                    "font-size": "7px"
                   },
                   "guide": {
                     "visible": false
@@ -385,10 +389,11 @@ function renderBoxPlot(labels, data, title, chartName) {
                     "border-color":"black",
                     "border-width":1,
                     "tooltip":{
+                        "align":"right",
                         "paddingBottom":5,
                         "background-color":"darkgrey",
                         "border-color":"lightgrey",
-                        "border-radius":10,
+                        "border-radius":0,
                         "text":"%data-station-name"
                         }
                     }
