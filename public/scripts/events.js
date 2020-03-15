@@ -8,6 +8,13 @@ let user = "";
 
 let userListClasses = "user-list-item collection-item";
 
+let modalInstance = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+    var elem = document.getElementById('modal');
+    modalInstance = M.Modal.init(elem,{});
+  });
+
 document.addEventListener("DOMContentLoaded", refreshData);
 
 function refreshData() {
@@ -87,13 +94,13 @@ function expandList(e) {
 
 
     newHTML += `<ul onclick="(event) => event.stopPropagation()" class="my-content idle-time">
-                <li data-target="modal" class="modal-trigger my-modal-data-list">Idle Time: ${data.idleCount / 1000} s</li>
+                <li data-target="modal" onclick="openModal(event)" class="modal-trigger my-modal-data-list">Idle Time: ${data.idleCount / 1000} s</li>
               </ul>
               `;
     newHTML += ` <ul class="my-content click-event">`;
     for (const d of data.mouseClickEvents) {
         newHTML += `
-    <li data-target="modal" class="modal-trigger my-modal-data-list" data-event=${JSON.stringify(
+    <li data-target="modal" onclick="openModal(event)" class="modal-trigger my-modal-data-list" data-event=${JSON.stringify(
             d
         )}>${d.timeStamp.toFixed(4)} - Mouse Click</li>
     `;
@@ -102,7 +109,7 @@ function expandList(e) {
     newHTML += `<ul class="my-content move-event">`;
     for (const d of data.mouseMoveEvents) {
         newHTML += `
-    <li data-target="modal" class="modal-trigger my-modal-data-list" data-event=${JSON.stringify(
+    <li data-target="modal" onclick="openModal(event)" class="modal-trigger my-modal-data-list" data-event=${JSON.stringify(
             d
         )}>${d.timeStamp.toFixed(4)} - Mouse Move</li>
     `;
@@ -111,7 +118,7 @@ function expandList(e) {
     newHTML += `<ul class="my-content keystroke-event">`;
     for (const d of data.keyEvents) {
         newHTML += `
-    <li data-target="modal" class="modal-trigger my-modal-data-list" data-event=${JSON.stringify(
+    <li data-target="modal" onclick="openModal(event)" class="modal-trigger my-modal-data-list" data-event=${JSON.stringify(
             d
         )}>${d.timeStamp.toFixed(4)} - Keystroke</li>
     `;
@@ -120,7 +127,7 @@ function expandList(e) {
     newHTML += `<ul class="my-content scroll-event">`;
     for (const d of data.scrollEvents) {
         newHTML += `
-    <li data-target="modal" class="modal-trigger my-modal-data-list" data-event=${JSON.stringify(
+    <li data-target="modal" onclick="openModal(event)" class="modal-trigger my-modal-data-list" data-event=${JSON.stringify(
             d
         )}>${d.timeStamp.toFixed(4)} - Scroll</li>
     `;
@@ -128,7 +135,7 @@ function expandList(e) {
     newHTML += `</ul>`;
     newHTML += `
         <ul class="my-content beforeunload-event">
-          <li data-target="modal" class="modal-trigger my-modal-data-list" data-event=${JSON.stringify(
+          <li data-target="modal" onclick="openModal(event)" class="modal-trigger my-modal-data-list" data-event=${JSON.stringify(
         data.beforeunload
     )}>${data.beforeunload.timeStamp.toFixed(4)} - Before Unload</li>
         </ul>
@@ -158,6 +165,7 @@ function openModal(e) {
     }
     modalHTML += `</ul>`;
     modalContent.innerHTML = modalHTML;
+    modalInstance.open();
 }
 
 function closeModal(e) {
