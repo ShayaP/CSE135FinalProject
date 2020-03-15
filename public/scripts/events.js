@@ -1,3 +1,5 @@
+
+console.log("hallo");
 let urlTable = document.getElementById('eventInfo');
 let modal = document.getElementById('modal');
 let modalContent = document.getElementById('modalContent');
@@ -15,15 +17,15 @@ document.addEventListener('DOMContentLoaded', function() {
     modalInstance = M.Modal.init(elem,{});
   });
 
-document.addEventListener("DOMContentLoaded", refreshData);
+document.addEventListener("DOMContentLoaded", refreshDataEvents);
 
-function refreshData() {
+function refreshDataEvents() {
     fetch('/query')
         .then(response => {
             return response.json();
         })
         .then(json => {
-            render(json);
+            renderEvents(json);
             for (const user in json) {
                 renderUser(user);
                 break;
@@ -32,7 +34,7 @@ function refreshData() {
         });
 }
 
-function render(json) {
+function renderEvents(json) {
     dbObject = json;
     let userList = document.getElementById('user-list');
     userList.innerHTML = '';
@@ -156,10 +158,10 @@ function closeList(e) {
 
 function openModal(e) {
     e.stopPropagation();
-    modal.classList.add('is-active');
+    //modal.classList.add('is-active');
     var eventData = JSON.parse(e.target.dataset.event);
     let modalHTML = '';
-    modalHTML += `<ul class="content modal-data-list">`;
+    modalHTML += `<ul class="my-content my-modal-data-list">`;
     for (const d in eventData) {
         modalHTML += `<li>${d}: ${eventData[d]}</li>`;
     }
@@ -169,5 +171,5 @@ function openModal(e) {
 }
 
 function closeModal(e) {
-    modal.classList.remove('is-active');
+    //modal.classList.remove('is-active');
 }
