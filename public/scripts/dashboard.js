@@ -28,6 +28,7 @@ function render(json) {
 
   renderDOMInteractiveChart(dbObject);
   renderTotalTimeChart(dbObject);
+  renderResourceTimingChart(dbObject);
 }
 
 function getUserListData(db) {
@@ -166,7 +167,6 @@ function renderPieChart(data, chartName, title) {
 }
 
 function renderBrowserChart(dbObject) {
-  //console.log(dbObject);
   let browserCount = getBrowserData(dbObject);
   renderPieChart(browserCount, 'browser-chart', 'Page Loads by Browser');
 }
@@ -221,9 +221,6 @@ function getFeaturesData(dbObject) {
   images = images / totalClicks * 100;
   javascript = javascript / totalClicks * 100;
   cookies = cookies / totalClicks * 100;
-
-  //console.log(css);
-  //console.log(totalClicks);
 
   let data = [css, images, cookies, javascript];
   let labels = ["CSS", "Images", "Cookies", "JS"];
@@ -491,9 +488,6 @@ function renderTotalTimeChart(dbObject) {
   let pages = getSitesArray(dbObject);
   let pagesBySite = getArrayBySite(dbObject);
 
-  console.log(pages.filter(element => element.navTiming.responseEnd !== 0 && element.navTiming.requestStart !== 0 && typeof(element.navTiming.responseEnd) === "number" && typeof(element.navTiming.requestStart) === "number"));
-  console.log(pages.filter(element => element.navTiming.responseEnd !== 0 && element.navTiming.requestStart !== 0 && typeof(element.navTiming.responseEnd) === "number" && typeof(element.navTiming.requestStart) === "number")
-    .map(element => element.navTiming.responseEnd - element.navTiming.requestStart));
   let totalTime = pages.filter(element => element.navTiming.responseEnd !== 0 && element.navTiming.requestStart !== 0 && typeof(element.navTiming.responseEnd) === "number" && typeof(element.navTiming.requestStart) === "number")
                             .map(element => element.navTiming.responseEnd - element.navTiming.requestStart)
                             .filter((e) => typeof(e) === "number");
@@ -515,41 +509,40 @@ function renderTotalTimeChart(dbObject) {
   renderBoxPlot(sites, stats, "Total Loading Time", "total-time-box-chart");
 }
 
+function renderResourceTimingChart(dbObject) {
+  const getFileEnding = str => {
+    if (typeof(str) === "string") {
+      return str.split('.').pop();
+    } else {
+      return "";
+    }
+  };
+
+  let pages = getSitesArray(dbObject);
+
+  let resourceTiming = pages.map(element => element.resourceTiming)
+                            .map(element => element.responseEnd - element.responseStart);
+
+  let names = resourceTiming.map(element => element.name);
+  let fileEndings = names.map(element => getFileEnding(element));
+
+  let data = {};
+
+  for (let i = 0; i < fileEndings.length; i++) {
+    if (!data.hasOwnProperty(names[i])) {
+      data[names[i]] = 0;
+    }
+    data[names[i]] += resourceTiming[i];
+  }
+
+  renderPieChart(data, "resource-timing-chart", "Loading Time by Resource Type");
+}
+
 
 /// HELPER FUNCTIONS
 
-
-/* inspired by: https://jonlabelle.com/snippets/view/javascript/calculate-mean-median-mode-and-range-in-javascript */
-/**
- * The "median" is the "middle" value in the list of numbers.
- *
- * @param {Array} numbers An array of numbers.
- * @return {Number} The calculated median value from the specified numbers.
- */
-function median(numbers) {
-  // median of [3, 5, 4, 4, 1, 1, 2, 3] = 3
-  var median = 0, numsLen = numbers.length;
-  numbers.sort();
-
-  if (
-      numsLen % 2 === 0 // is even
-  ) {
-      // average of two middle numbers
-      median = (numbers[numsLen / 2 - 1] + numbers[numsLen / 2]) / 2;
-  } else { // is odd
-      // middle number only
-      median = numbers[(numsLen - 1) / 2];
-  }
-
-  return median;
-}
-
 const getMax = (numbers) => numbers.reduce((x,y) => x >= y ? x : y);
 const getMin = (numbers) => numbers.reduce((x,y) => x <= y ? x : y);
-
-/* inspired by https://jonlabelle.com/snippets/view/javascript/calculate-mean-median-mode-and-range-in-javascript */
-// alternative mean/average method (from https://www.30secondsofcode.org/snippet/average):
-const mean = (...numbers) => numbers.reduce((acc, val) => acc + val, 0) / numbers.length;
 
 /* inspired by: https://stackoverflow.com/questions/48719873/how-to-get-median-and-quartiles-percentiles-of-an-array-in-javascript-or-php */
 const quantile = (arr, q) => {
