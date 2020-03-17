@@ -445,7 +445,29 @@ exports.purge = functions.https.onRequest((req, res) => {
     });
 });
 
+exports.sessionLogin = functions.https.onRequest((req, res) => {
+  let requestBody = JSON.parse(req.body);
+  let idToken = requestBody.token;
 
+  // ALSO TAKE CARE OF CSRF ATTACKS!
+  // https://firebase.google.com/docs/auth/admin/manage-cookies
+
+  // Set session expiration to 5 days.
+  const expiresIn = 60 * 60 * 24 * 5 * 1000;
+  // Create the session cookie. This will also verify the ID token in the process.
+  // The session cookie will have the same claims as the ID token.
+  // To only allow session cookie setting on recent sign-in, auth_time in ID token
+  // can be checked to ensure user was recently signed in before creating a session cookie.
+  admin.auth().createSessionCookie(idToken, {expiresIn})
+    .then((sessionCookie) => {
+     // Set cookie policy for session cookie.
+     const options = {maxAge: expiresIn, httpOnly: true, secure: false};
+     res.cookie('__session', sessionCookie, options);
+     res.end(JSON.stringify({status: 'success'}));
+    }, error => {
+     res.status(401).send('UNAUTHORIZED REQUEST!');
+    });
+})
 
 /* from https://github.com/firebase/functions-samples/blob/master/authorized-https-endpoint/functions/index.js */
 
@@ -486,7 +508,7 @@ const validateFirebaseIdToken = async (req, res, next) => {
   }
 
   try {
-    const decodedIdToken = await admin.auth().verifyIdToken(idToken);
+    const decodedIdToken = await admin.auth().verifySessionCookie(idToken);
     console.log('ID Token correctly decoded', decodedIdToken);
     req.user = decodedIdToken;
     console.log("Decoded token!!! " + JSON.stringify(decodedIdToken));

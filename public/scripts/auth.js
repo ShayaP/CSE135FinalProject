@@ -12,18 +12,16 @@ document.addEventListener('DOMContentLoaded', function() {
 function login(form) {
   var formData = new FormData(form);
   var data = Object.fromEntries(formData);
+
+  /* For setting a session cookie read: https://firebase.google.com/docs/auth/admin/manage-cookies */
+
+  //firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
+
   firebase
     .auth()
-    .signInWithEmailAndPassword(data.email, data.password)
-    .then(function(result) {
-      window.location.href = '/dashboard.html';
-    })
-    .catch(function(error) {
-      let el = document.getElementById('statusMsg');
-      el.innerHTML = error.message;
-      el.classList.add('is-danger');
-      el.classList.remove('is-success');
-    });
+    .signInWithEmailAndPassword(data.email, data.password);
+    // refer to: https://stackoverflow.com/questions/49722324/firebase-getidtoken-not-working
+    // -> hence moved the getIdToken() part to onAuthStateChanged
 }
 
 function signOut() {
@@ -76,7 +74,13 @@ function addUser(form) {
 
 firebase.auth().onAuthStateChanged(user => {
   if (user && window.location.pathname === '/login.html') {
-    window.location.href = '/dashboard.html';
+    //window.location.href = '/dashboard.html';
+  }
+  if (user) {
+    user.getIdToken().then(idToken => {
+      console.log("Fetch SessionLogin");
+      return fetch('/sessionLogin', {method: 'POST', body: JSON.stringify({token: idToken}), credentials: "same-origin"});
+    });
   }
 });
 

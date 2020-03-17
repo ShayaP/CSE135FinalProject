@@ -90,6 +90,10 @@
       {
         "source": "/app",
         "function": "app"
+      },
+      {
+        "source": "/sessionLogin",
+        "function": "sessionLogin"
       }
     ]
   }
