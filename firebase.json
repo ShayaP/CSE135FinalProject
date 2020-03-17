@@ -86,6 +86,10 @@
       {
         "source": "/createUser",
         "function": "createUser"
+      },
+      {
+        "source": "/app",
+        "function": "app"
       }
     ]
   }
