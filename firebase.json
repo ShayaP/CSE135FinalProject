@@ -94,6 +94,10 @@
       {
         "source": "/sessionLogin",
         "function": "sessionLogin"
+      },
+      {
+        "source": "/sessionLogout",
+        "function": "sessionLogout"
       }
     ]
   }

@@ -372,21 +372,6 @@ exports.collect = functions.https.onRequest((req, res) => {
     });
 });
 
-exports.query = functions.https.onRequest((req, res) => {
-  res.set('Access-Control-Allow-Origin', '*');
-
-  db.collection(dbCollection)
-    .get()
-    .then(result => {
-      let reportsJson = {};
-
-      result.forEach(doc => {
-        reportsJson[doc.id] = doc.data();
-      });
-      res.json(reportsJson);
-    });
-});
-
 exports.purgeAll = functions.https.onRequest((req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
 
@@ -445,6 +430,11 @@ exports.purge = functions.https.onRequest((req, res) => {
     });
 });
 
+exports.sessionLogout = functions.https.onRequest((req, res) => {
+  res.clearCookie('__sessio');
+  res.redirect('/login.html');
+});
+
 exports.sessionLogin = functions.https.onRequest((req, res) => {
   let requestBody = JSON.parse(req.body);
   let idToken = requestBody.token;
@@ -470,6 +460,8 @@ exports.sessionLogin = functions.https.onRequest((req, res) => {
 })
 
 /* from https://github.com/firebase/functions-samples/blob/master/authorized-https-endpoint/functions/index.js */
+
+// Whenever a user is accessing restricted content that requires authentication.
 
 // Express middleware that validates Firebase ID Tokens passed in the Authorization HTTP header.
 // The Firebase ID token needs to be passed as a Bearer token in the Authorization HTTP header like this:
@@ -525,11 +517,19 @@ const validateFirebaseIdToken = async (req, res, next) => {
 app.use(cors);
 app.use(cookieParser);
 app.use(validateFirebaseIdToken);
-app.get('/app', (req, res) => {
-  res.send(`Hello ${req.user.email}`);
+app.get('/query', (req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+
+  db.collection(dbCollection)
+    .get()
+    .then(result => {
+      let reportsJson = {};
+
+      result.forEach(doc => {
+        reportsJson[doc.id] = doc.data();
+      });
+      res.json(reportsJson);
+    });
 });
 
-// This HTTPS endpoint can only be accessed by your Firebase Users.
-// Requests need to be authorized by providing an `Authorization` HTTP header
-// with value `Bearer <Firebase ID Token>`.
-exports.app = functions.https.onRequest(app);
+exports.query = functions.https.onRequest(app);

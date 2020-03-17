@@ -15,7 +15,7 @@ function login(form) {
 
   /* For setting a session cookie read: https://firebase.google.com/docs/auth/admin/manage-cookies */
 
-  //firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
+  firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
 
   firebase
     .auth()
@@ -25,12 +25,12 @@ function login(form) {
 }
 
 function signOut() {
-  firebase
+  /*firebase
     .auth()
     .signOut()
     .then(() => {
       window.location.href = '/login.html';
-    });
+    });*/
 }
 
 function deleteUser(e, callback) {
@@ -74,12 +74,12 @@ function addUser(form) {
 
 firebase.auth().onAuthStateChanged(user => {
   if (user && window.location.pathname === '/login.html') {
-    //window.location.href = '/dashboard.html';
-  }
-  if (user) {
     user.getIdToken().then(idToken => {
       console.log("Fetch SessionLogin");
-      return fetch('/sessionLogin', {method: 'POST', body: JSON.stringify({token: idToken}), credentials: "same-origin"});
+      return fetch('/sessionLogin', {method: 'POST', body: JSON.stringify({token: idToken}), credentials: "same-origin"})
+        .then(() => {
+          window.location.href = '/dashboard.html';
+        });
     });
   }
 });

@@ -1,10 +1,10 @@
-firebase.auth().onAuthStateChanged(user => {
+/*firebase.auth().onAuthStateChanged(user => {
   if (!user) {
     window.location.href = '/login.html';
   } else {
     checkIfAdmin(user);
   }
-});
+});*/
 
 document.addEventListener('DOMContentLoaded', function() {
   var elems = document.querySelectorAll('.dropdown-trigger');
@@ -41,7 +41,7 @@ function checkIfAdmin(user) {
           >
         </li>
         <li>
-          <a onclick="signOut()"
+          <a onclick="/sessionLogout"
             ><i class="material-icons">exit_to_app</i>Logout</a
           >
         </li>`;
