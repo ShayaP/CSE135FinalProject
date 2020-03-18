@@ -15,6 +15,25 @@ document.addEventListener('DOMContentLoaded', function() {
   checkIfAdmin();
 });
 
+// Check if the user is logged in or not
+document.addEventListener("DOMContentLoaded", checkIfLoggedIn);
+
+function checkIfLoggedIn() {
+  console.log('calling checkIfLoggedIn')
+  fetch('/checkUserType', {method: 'GET'})
+  .then(res => {
+    return res.json();
+  })
+  .then( obj => {
+    if (obj.type === 'unauthorized') {
+      window.location.href = '/login.html';
+    }
+  })
+  .catch(err => {
+    console.log(err);
+  })
+}
+
 function checkIfAdmin() {
   fetch('/checkUserType', {
     credentials: 'include',

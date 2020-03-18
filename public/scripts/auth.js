@@ -25,6 +25,8 @@ function login(form) {
 }
 
 function signOut() {
+  console.log('called signout');
+  
   /*firebase
     .auth()
     .signOut()

@@ -8,6 +8,8 @@ table {
 #eventInfo,
 #eventLog ul {
   list-style: none;
+  max-height: 600px;
+  overflow-y: scroll;
 }
 
 #eventLog {

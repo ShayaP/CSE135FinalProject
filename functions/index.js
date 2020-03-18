@@ -595,6 +595,7 @@ exports.purge = functions.https.onRequest((req, res) => {
 });
 
 exports.sessionLogout = functions.https.onRequest((req, res) => {
+  console.log('\n*****Logout*****\n')
   res.clearCookie('__session');
   res.redirect('/login.html');
 });
