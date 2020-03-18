@@ -26,6 +26,8 @@ const queryString = require('querystring');
 const dbCollection = '/reports/';
 
 const app = express();
+app.use(cors);
+app.use(cookieParser);
 
 const purgeSchema = joi.object({
   url: joi.string().required(),
@@ -82,45 +84,184 @@ const collectSchema = joi.object({
     .required()
 });
 
-exports.updateUser = functions.https.onRequest((req, res) => {
-  res.set('Access-Control-Allow-Origin', '*');
-  res.setHeader('Cache-Control', 'private'); // required for cookie according to documentation
-  let body = JSON.parse(req.body);
-  const uid = body.uid;
-  const email = body.email;
-  const type = body.type;
-  admin
-    .auth()
-    .updateUser(uid, { email })
-    .then(() => {
-      if (type === 'admin') {
-        changeAdminPrivilages(uid, true);
-      } else {
-        changeAdminPrivilages(uid, false);
-      }
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).end();
-    });
+
+
+
+
+
+
+/* from https://github.com/firebase/functions-samples/blob/master/authorized-https-endpoint/functions/index.js */
+
+// Whenever a user is accessing restricted content that requires authentication.
+
+// Express middleware that validates Firebase ID Tokens passed in the Authorization HTTP header.
+// The Firebase ID token needs to be passed as a Bearer token in the Authorization HTTP header like this:
+// `Authorization: Bearer <Firebase ID Token>`.
+// when decoded successfully, the ID Token content will be added as `req.user`.
+const validateFirebaseIdToken = async (req, res) => {
+  console.log('Check if request is authorized with Firebase ID token');
+
+  //console.log(req);
+  //const tokenId = req.get('Authorization').split('Bearer ')[1];
+  //console.log("token: " + tokenId);
+
+  if ((!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) &&
+      !(req.cookies && req.cookies.__session)) {
+    console.error('No Firebase ID token was passed as a Bearer token in the Authorization header or as __session cookie.',
+        'Make sure you authorize your request by providing the following HTTP header:',
+        'Authorization: Bearer <Firebase ID Token>',
+        'or by passing a "__session" cookie.');
+    res.status(403).send('Unauthorized');
+    return false;
+  }
+
+  let idToken;
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+    console.log('Found "Authorization" header');
+    // Read the ID Token from the Authorization header.
+    idToken = req.headers.authorization.split('Bearer ')[1];
+  } else if(req.cookies) {
+    console.log('Found "__session" cookie');
+    // Read the ID Token from cookie.
+    idToken = req.cookies.__session;
+  } else {
+    // No cookie
+    res.status(403).send('Unauthorized');
+    return false;
+  }
+
+  try {
+    const decodedIdToken = await admin.auth().verifySessionCookie(idToken);
+    console.log('ID Token correctly decoded', decodedIdToken);
+    req.user = decodedIdToken;
+    console.log("Decoded token!!! " + JSON.stringify(decodedIdToken));
+
+    //next();
+    return decodedIdToken;
+  } catch (error) {
+    console.error('Error while verifying Firebase ID token:', error);
+    res.status(403).send('Unauthorized');
+    return false;
+  }
+};
+
+
+const validateFirebaseIdTokenAdmin = async (req, res) => {
+  console.log('Check if request is authorized with Firebase ID token');
+
+  //console.log(req);
+  //const tokenId = req.get('Authorization').split('Bearer ')[1];
+  //console.log("token: " + tokenId);
+
+  if ((!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) &&
+      !(req.cookies && req.cookies.__session)) {
+    console.error('No Firebase ID token was passed as a Bearer token in the Authorization header or as __session cookie.',
+        'Make sure you authorize your request by providing the following HTTP header:',
+        'Authorization: Bearer <Firebase ID Token>',
+        'or by passing a "__session" cookie.');
+    res.status(403).send('Unauthorized');
+    return false;
+  }
+
+  let idToken;
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+    console.log('Found "Authorization" header');
+    // Read the ID Token from the Authorization header.
+    idToken = req.headers.authorization.split('Bearer ')[1];
+  } else if(req.cookies) {
+    console.log('Found "__session" cookie');
+    // Read the ID Token from cookie.
+    idToken = req.cookies.__session;
+  } else {
+    // No cookie
+    res.status(403).send('Unauthorized');
+    return false;
+  }
+
+  try {
+    const decodedIdToken = await admin.auth().verifySessionCookie(idToken);
+    console.log('ID Token correctly decoded', decodedIdToken);
+    req.user = decodedIdToken;
+    console.log("Decoded token!!! " + JSON.stringify(decodedIdToken));
+
+    let uid = decodedIdToken.user_id;
+    // Verify the ID token first.
+    admin
+      .auth()
+      .getUser(uid)
+      .then(user => {
+        if (user.customClaims && user.customClaims.admin === true) {
+          // do nothing -> confirm
+          console.log("Confirmed user is admin (uid: " + uid + ")!");
+        } else {
+          console.log("User (uid: " + uid + ") is not admin - unauthorized");
+          res.status(403).send('Unauthorized (need to be admin, but is regular user)');
+        }
+      });
+
+    return decodedIdToken;
+  } catch (error) {
+    console.error('Error while verifying Firebase ID token:', error);
+    res.status(403).send('Unauthorized');
+    return false;
+  }
+};
+
+
+app.post('/updateUser', (req, res) => {
+  validateFirebaseIdTokenAdmin(req, res).then(valid => {
+    if (valid === false) {
+      return;
+    }
+
+    res.set('Access-Control-Allow-Origin', '*');
+    res.setHeader('Cache-Control', 'private'); // required for cookie according to documentation
+    let body = JSON.parse(req.body);
+    const uid = body.uid;
+    const email = body.email;
+    const type = body.type;
+    admin
+      .auth()
+      .updateUser(uid, { email })
+      .then(() => {
+        if (type === 'admin') {
+          changeAdminPrivilages(uid, true);
+        } else {
+          changeAdminPrivilages(uid, false);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).end();
+      });
+  });
 });
 
-exports.deleteUser = functions.https.onRequest((req, res) => {
-  res.set('Access-Control-Allow-Origin', '*');
-  res.setHeader('Cache-Control', 'private'); // required for cookie according to documentation
-  const uid = JSON.parse(req.body).uid;
-  admin
-    .auth()
-    .deleteUser(uid)
-    .then(() => {
-      console.log('success');
-      res.end();
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).end();
-    });
+exports.updateUser = functions.https.onRequest(app);
+
+app.post('/deleteUser', (req, res) => {
+  validateFirebaseIdTokenAdmin(req, res).then(valid => {
+    if (valid === false) {
+      return;
+    }
+    res.set('Access-Control-Allow-Origin', '*');
+    res.setHeader('Cache-Control', 'private'); // required for cookie according to documentation
+    const uid = JSON.parse(req.body).uid;
+    admin
+      .auth()
+      .deleteUser(uid)
+      .then(() => {
+        console.log('success');
+        res.end();
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).end();
+      });
+  });
 });
+
+exports.deleteUser = functions.https.onRequest(app);
 
 function changeAdminPrivilages(uid, adminBool) {
   admin
@@ -147,46 +288,69 @@ exports.registerAdminUser = functions.https.onRequest((req, res) => {
     });
 });
 
-exports.checkUserType = functions.https.onRequest((req, res) => {
+app.get('/checkUserType',async (req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 'private'); // required for cookie according to documentation
-  const uid = JSON.parse(req.body).uid;
+  idToken = req.cookies.__session;
+
+  let decodedIdToken = await validateFirebaseIdToken(req, res);
+
+  if (decodedIdToken === false) {
+    res.json({ type: 'unauthorized'});
+    return;
+  }
+
+  const uid = decodedIdToken.user_id;
 
   // Verify the ID token first.
+
+  console.log("checkUserType found id " + uid);
   admin
     .auth()
     .getUser(uid)
     .then(user => {
       if (user.customClaims && user.customClaims.admin === true) {
-        res.json({ type: 'admin' });
+        console.log("Check user type: recognised admin");
+        res.json({ type: 'admin', email: decodedIdToken.email});
       } else {
-        res.json({ type: 'regular' });
+        console.log("Check user type: not admin");
+        res.json({ type: 'regular', email: decodedIdToken.email });
       }
     });
 });
 
-exports.createUser = functions.https.onRequest((req, res) => {
-  res.set('Access-Control-Allow-Origin', '*');
-  res.setHeader('Cache-Control', 'private'); // required for cookie according to documentation
-  let body = JSON.parse(req.body);
-  const email = body.email;
-  const pass = body.pass;
-  admin
-    .auth()
-    .createUser({
-      email: email,
-      emailVerified: false,
-      password: pass,
-      disabled: false
-    })
-    .then(() => {
-      res.end();
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).end();
-    });
+exports.checkUserType = functions.https.onRequest(app);
+
+app.post('/createUser', (req, res) => {
+  validateFirebaseIdTokenAdmin(req, res).then(valid => {
+    if (valid === false) {
+      return;
+    }
+
+    res.set('Access-Control-Allow-Origin', '*');
+    res.setHeader('Cache-Control', 'private'); // required for cookie according to documentation
+    let body = JSON.parse(req.body);
+    const email = body.email;
+    const pass = body.pass;
+    admin
+      .auth()
+      .createUser({
+        email: email,
+        emailVerified: false,
+        password: pass,
+        disabled: false
+      })
+      .then(() => {
+        res.end();
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).end();
+      });
+  })
 });
+
+exports.createUser = functions.https.onRequest(app);
 
 exports.getUsers = functions.https.onRequest((req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
@@ -457,79 +621,27 @@ exports.sessionLogin = functions.https.onRequest((req, res) => {
     }, error => {
      res.status(401).send('UNAUTHORIZED REQUEST!');
     });
-})
+});
 
-/* from https://github.com/firebase/functions-samples/blob/master/authorized-https-endpoint/functions/index.js */
-
-// Whenever a user is accessing restricted content that requires authentication.
-
-// Express middleware that validates Firebase ID Tokens passed in the Authorization HTTP header.
-// The Firebase ID token needs to be passed as a Bearer token in the Authorization HTTP header like this:
-// `Authorization: Bearer <Firebase ID Token>`.
-// when decoded successfully, the ID Token content will be added as `req.user`.
-const validateFirebaseIdToken = async (req, res, next) => {
-  console.log('Check if request is authorized with Firebase ID token');
-
-  //console.log(req);
-  //const tokenId = req.get('Authorization').split('Bearer ')[1];
-  //console.log("token: " + tokenId);
-
-  if ((!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) &&
-      !(req.cookies && req.cookies.__session)) {
-    console.error('No Firebase ID token was passed as a Bearer token in the Authorization header.',
-        'Make sure you authorize your request by providing the following HTTP header:',
-        'Authorization: Bearer <Firebase ID Token>',
-        'or by passing a "__session" cookie.');
-    res.status(403).send('Unauthorized');
-    return;
-  }
-
-  let idToken;
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
-    console.log('Found "Authorization" header');
-    // Read the ID Token from the Authorization header.
-    idToken = req.headers.authorization.split('Bearer ')[1];
-  } else if(req.cookies) {
-    console.log('Found "__session" cookie');
-    // Read the ID Token from cookie.
-    idToken = req.cookies.__session;
-  } else {
-    // No cookie
-    res.status(403).send('Unauthorized');
-    return;
-  }
-
-  try {
-    const decodedIdToken = await admin.auth().verifySessionCookie(idToken);
-    console.log('ID Token correctly decoded', decodedIdToken);
-    req.user = decodedIdToken;
-    console.log("Decoded token!!! " + JSON.stringify(decodedIdToken));
-    next();
-    return;
-  } catch (error) {
-    console.error('Error while verifying Firebase ID token:', error);
-    res.status(403).send('Unauthorized');
-    return;
-  }
-};
-
-
-app.use(cors);
-app.use(cookieParser);
-app.use(validateFirebaseIdToken);
 app.get('/query', (req, res) => {
-  res.set('Access-Control-Allow-Origin', '*');
+  validateFirebaseIdToken(req, res).then(valid => {
+    if (valid === false) {
+      return;
+    }
 
-  db.collection(dbCollection)
-    .get()
-    .then(result => {
-      let reportsJson = {};
+    res.set('Access-Control-Allow-Origin', '*');
 
-      result.forEach(doc => {
-        reportsJson[doc.id] = doc.data();
+    db.collection(dbCollection)
+      .get()
+      .then(result => {
+        let reportsJson = {};
+  
+        result.forEach(doc => {
+          reportsJson[doc.id] = doc.data();
+        });
+        res.json(reportsJson);
       });
-      res.json(reportsJson);
-    });
+  })
 });
 
 exports.query = functions.https.onRequest(app);

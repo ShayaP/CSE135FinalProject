@@ -1,5 +1,4 @@
 
-console.log("hallo");
 let urlTable = document.getElementById('eventInfo');
 let modal = document.getElementById('modal');
 let modalContent = document.getElementById('modalContent');
