@@ -66,6 +66,9 @@ function getArrayBySite(db) {
 
 function getBrowser(userAgent) {
   // Inspired by code from https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser 
+  if (typeof(userAgent) !== 'string') {
+      return 'other';
+  }
   if((userAgent.indexOf("Opera") || userAgent.indexOf('OPR')) != -1 ) 
   {
       return 'Opera';
