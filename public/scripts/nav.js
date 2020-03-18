@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
   checkIfAdmin();
 });
 
-function checkIfAdmin(user) {
+function checkIfAdmin() {
   fetch('/checkUserType', {
     credentials: 'include',
   })
@@ -39,7 +39,7 @@ function checkIfAdmin(user) {
           >
         </li>
         <li>
-          <a onclick="/sessionLogout"
+          <a href="/sessionLogout"
             ><i class="material-icons">exit_to_app</i>Logout</a
           >
         </li>`;
@@ -52,7 +52,7 @@ function checkIfAdmin(user) {
             >
           </li>
           <li>
-            <a onclick="signOut()"
+            <a href="/sessionLogout"
               ><i class="material-icons">exit_to_app</i>Logout</a
             >
           </li>`;

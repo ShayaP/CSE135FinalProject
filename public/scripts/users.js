@@ -1,10 +1,10 @@
-firebase.auth().onAuthStateChanged(user => {
+/*firebase.auth().onAuthStateChanged(user => {
   if (!user) {
     window.location.href = '/login.html';
   } else {
     renderUseresPage(user);
   }
-});
+});*/
 
 let selects;
 let modals;
@@ -15,20 +15,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
   selects = document.querySelectorAll('select');
   M.FormSelect.init(selects, {});
+  renderUseresPage();
 });
 
-function renderUseresPage(user = firebase.auth().currentUser) {
-  fetch('/getUsers', {
-    method: 'POST',
-    credentials: 'include',
-    body: `{"uid":"${user.uid}"}`
-  })
-    .then(r => r.json().then(data => ({ status: r.status, body: data })))
-    .then(obj => {
-      if (obj.status === 200) {
-        fillInTable(obj.body.users);
-      }
-    });
+function renderUseresPage() {
+  fetch('/checkUserType').then(res =>{
+    return res.json();
+  }).then(json => {
+    let uid = json.uid;
+
+    fetch('/getUsers')
+      .then(r => r.json().then(data => ({ status: r.status, body: data })))
+      .then(obj => {
+        if (obj.status === 200) {
+          fillInTable(obj.body.users);
+        }
+      });
+  });
 }
 
 function fillInTable(users) {
@@ -94,6 +97,7 @@ function editUser(form) {
 }
 
 function storeUID(e) {
+  console.log(e.dataset.uid);
   let uid = e.dataset.uid;
   let el = document.getElementById('editUserForm');
   el.dataset.uid = uid;

@@ -196,6 +196,7 @@ const validateFirebaseIdTokenAdmin = async (req, res) => {
         } else {
           console.log("User (uid: " + uid + ") is not admin - unauthorized");
           res.status(403).send('Unauthorized (need to be admin, but is regular user)');
+          return false;
         }
       });
 
@@ -229,6 +230,7 @@ app.post('/updateUser', (req, res) => {
         } else {
           changeAdminPrivilages(uid, false);
         }
+        res.send('Success');
       })
       .catch(err => {
         console.log(err);
@@ -311,10 +313,11 @@ app.get('/checkUserType',async (req, res) => {
     .then(user => {
       if (user.customClaims && user.customClaims.admin === true) {
         console.log("Check user type: recognised admin");
-        res.json({ type: 'admin', email: decodedIdToken.email});
+        console.log("USER: " + user);
+        res.json({ type: 'admin', email: decodedIdToken.email, uid: user.id, creationTime: user.metadata.creationTime, lastSignInTime: user.metadata.lastSignInTime});
       } else {
         console.log("Check user type: not admin");
-        res.json({ type: 'regular', email: decodedIdToken.email });
+        res.json({ type: 'regular', email: decodedIdToken.email, uid: user.id,  creationTime: user.metadata.creationTime, lastSignInTime: user.metadata.lastSignInTime});
       }
     });
 });
@@ -352,18 +355,16 @@ app.post('/createUser', (req, res) => {
 
 exports.createUser = functions.https.onRequest(app);
 
-exports.getUsers = functions.https.onRequest((req, res) => {
+app.get('/getUsers', (req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 'private'); // required for cookie according to documentation
-  const uid = JSON.parse(req.body).uid;
 
   // Verify the ID token first.
-  admin
-    .auth()
-    .getUser(uid)
-    .then(user => {
-      if (user.customClaims && user.customClaims.admin === true) {
-        admin
+  validateFirebaseIdTokenAdmin(req, res).then(valid => {
+    if (valid === false) {
+      res.status(403).send('Unauthorized (need to be signed in as admin)');
+    }
+    admin
           .auth()
           .listUsers(1000)
           .then(users => {
@@ -373,11 +374,10 @@ exports.getUsers = functions.https.onRequest((req, res) => {
             console.log(error);
             res.status(500).json(error);
           });
-      } else {
-        res.status(401).end();
-      }
     });
 });
+
+exports.getUsers = functions.https.onRequest(app);
 
 exports.tracker = functions.https.onRequest((req, res) => {
   // Set headers for response
