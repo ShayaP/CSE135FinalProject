@@ -423,8 +423,14 @@ function renderDOMInteractiveChart(dbObject) {
   let pages = getSitesArray(dbObject);
   let pagesBySite = getArrayBySite(dbObject);
 
-  let domInteractive = pages.map(element => element.navTiming.domInteractive)
-                            .filter((e) => typeof(e) === "number");
+  let domInteractive = pages.map(element => {
+        if (element.hasOwnProperty('navTiming')) {
+            if (element.navTiming.hasOwnProperty('domInteractive')) {
+                return element.navTiming.domInteractive;
+            }
+        }
+        return null;
+    }).filter((e) => typeof(e) === "number");
 
   let statsDomInteractive = calculateStatistics(domInteractive);
 
@@ -432,8 +438,14 @@ function renderDOMInteractiveChart(dbObject) {
   let sites = ["Total"];
   Object.keys(pagesBySite).forEach((key) => {
     sites.push(key);
-    let timeData = pagesBySite[key].map(element => element.navTiming.domInteractive)
-                                  .filter((e) => typeof(e) === "number");
+    let timeData = pagesBySite[key].map(element => {
+        if (element.hasOwnProperty('navTiming')) {
+            if (element.navTiming.hasOwnProperty('domInteractive')) {
+                return element.navTiming.domInteractive;
+            }
+        }
+        return null;
+    }).filter((e) => typeof(e) === "number");
     
     let statsData = calculateStatistics(timeData);
     stats.push(statsData);
@@ -446,9 +458,15 @@ function renderTotalTimeChart(dbObject) {
   let pages = getSitesArray(dbObject);
   let pagesBySite = getArrayBySite(dbObject);
 
-  let totalTime = pages.filter(element => element.navTiming.responseEnd !== 0 && element.navTiming.requestStart !== 0 && typeof(element.navTiming.responseEnd) === "number" && typeof(element.navTiming.requestStart) === "number")
-                            .map(element => element.navTiming.responseEnd - element.navTiming.requestStart)
-                            .filter((e) => typeof(e) === "number");
+  let totalTime = pages.filter(element => {
+      if (element.hasOwnProperty('navTiming')) {
+          if (element.navTiming.hasOwnProperty('responseEnd') && element.navTiming.hasOwnProperty('requestStart')) {
+                return element.navTiming.responseEnd !== 0 && element.navTiming.requestStart !== 0 && typeof(element.navTiming.responseEnd) === "number" && typeof(element.navTiming.requestStart) === "number"
+           }
+       }
+       return false;
+  }).map(element => element.navTiming.responseEnd - element.navTiming.requestStart)
+    .filter((e) => typeof(e) === "number");
 
   let statsTotalTime = calculateStatistics(totalTime);
 
@@ -456,9 +474,15 @@ function renderTotalTimeChart(dbObject) {
   let sites = ["Total"];
   Object.keys(pagesBySite).forEach((key) => {
     sites.push(key);
-    let timeData = pagesBySite[key].filter(element => element.navTiming.responseEnd !== 0 && element.navTiming.requestStart !== 0 && typeof(element.navTiming.responseEnd) === "number" && typeof(element.navTiming.requestStart) === "number")
-                                  .map(element => element.navTiming.responseEnd - element.navTiming.requestStart)
-                                  .filter((e) => typeof(e) === "number");
+    let timeData = pagesBySite[key].filter(element => {
+      if (element.hasOwnProperty('navTiming')) {
+          if (element.navTiming.hasOwnProperty('responseEnd') && element.navTiming.hasOwnProperty('requestStart')) {
+                return element.navTiming.responseEnd !== 0 && element.navTiming.requestStart !== 0 && typeof(element.navTiming.responseEnd) === "number" && typeof(element.navTiming.requestStart) === "number"
+           }
+       }
+       return false;
+  }).map(element => element.navTiming.responseEnd - element.navTiming.requestStart)
+    .filter((e) => typeof(e) === "number");
     
     let statsData = calculateStatistics(timeData);
     stats.push(statsData);
@@ -477,7 +501,12 @@ function renderResourceTimingChart(dbObject) {
   };
 
   let pages = getSitesArray(dbObject);
-  let resourceTiming = pages.map(element => element.resourceTiming)
+  let resourceTiming = pages.map(element => {
+      if (element.hasOwnProperty('resourceTiming')) {
+          return element.resourceTiming;
+      }
+      return null;
+  }).filter(element => element !== null);
 
   let timings = [];
 
@@ -522,8 +551,8 @@ function renderResourceTimingChart(dbObject) {
 
 /// HELPER FUNCTIONS
 
-const getMax = (numbers) => numbers.reduce((x,y) => x >= y ? x : y);
-const getMin = (numbers) => numbers.reduce((x,y) => x <= y ? x : y);
+const getMax = (numbers) => numbers.reduce((x,y) => x >= y ? x : y, 0);
+const getMin = (numbers) => numbers.reduce((x,y) => x <= y ? x : y, 0);
 
 /* inspired by: https://stackoverflow.com/questions/48719873/how-to-get-median-and-quartiles-percentiles-of-an-array-in-javascript-or-php */
 const quantile = (arr, q) => {
