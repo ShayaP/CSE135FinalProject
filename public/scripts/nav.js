@@ -22,7 +22,12 @@ function checkIfLoggedIn() {
   console.log('calling checkIfLoggedIn')
   fetch('/checkUserType', {method: 'GET'})
   .then(res => {
-    return res.json();
+    if (res.status === 403) {
+      window.location.href = '/login.html';
+    } else {
+      return res.json();
+    }
+    
   })
   .then( obj => {
     if (obj.type === 'unauthorized') {
@@ -39,7 +44,11 @@ function checkIfAdmin() {
     credentials: 'include',
   })
     .then(res => {
-      return res.json();
+      if (res.status === 403) {
+        window.location.href = '/login.html';
+      } else {
+        return res.json();
+      }
     })
     .then(json => {
       let dropdownEl = document.getElementById('dropdown-list');

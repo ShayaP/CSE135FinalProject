@@ -101,3 +101,8 @@ table {
   width: 100%;
   margin-top: .25em;
 }
+
+#user-list {
+  max-height: 400px;
+  overflow: auto;
+}
