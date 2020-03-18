@@ -432,7 +432,14 @@ function renderDOMInteractiveChart(dbObject) {
   let sites = ["Total"];
   Object.keys(pagesBySite).forEach((key) => {
     sites.push(key);
-    let timeData = pagesBySite[key].map(element => element.navTiming.domInteractive)
+    let timeData = pagesBySite[key].map(element => {
+        if (element.hasOwnProperty('navTiming')) {
+            if (element.navTiming.hasOwnProperty('domInteractive')) {
+                return element.navTiming.domInteractive;
+            }
+        }
+        return null;
+    });
                                   .filter((e) => typeof(e) === "number");
     
     let statsData = calculateStatistics(timeData);
