@@ -9,6 +9,10 @@ Simon Kaufmann A16140686 <br/>
 Here is the link for our deployed project:
     
     https://cse135finalproject.firebaseapp.com
+    
+To navigate to the analytics dashboard open:
+    
+    https://cse135finalproject.firebaseapp.com/dashboard.html
 
 
 Admin Username and Password:
