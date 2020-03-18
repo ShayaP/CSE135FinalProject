@@ -431,7 +431,7 @@ exports.purge = functions.https.onRequest((req, res) => {
 });
 
 exports.sessionLogout = functions.https.onRequest((req, res) => {
-  res.clearCookie('__sessio');
+  res.clearCookie('__session');
   res.redirect('/login.html');
 });
 
